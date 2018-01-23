@@ -18,7 +18,7 @@ public:
 	int maxAtk;
 	int maxDef;
 
-	int effect;
+	int effect; // ?
 
 	bool isStorm;
 	bool isRush;
@@ -26,6 +26,16 @@ public:
 	bool isTaunt;
 	bool isTargetable;
 	bool isCanAttack;
+
+	// info
+
+	int atr1;
+	int atr2;
+	int atr3;
+
+	// Card abilities/fuctions
+
+	void fBuffStats(); // add atr1 to atk // add atr2 to def // to @selected@ card
 
 
 };

@@ -113,7 +113,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cards.cpp" />
+    <ClCompile Include="globals.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="work.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cards.h" />

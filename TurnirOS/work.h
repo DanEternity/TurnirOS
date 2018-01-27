@@ -21,3 +21,5 @@ void processPlayCard(int card, int pos, int trg);
 void destroyCard(int side, int pos);
 
 void processTurnMain();
+
+void loadDeck(string filename, int pl);

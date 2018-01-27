@@ -18,7 +18,8 @@ void Card::playCard()
 {
 	if (!requredSp)
 	{
-		effPTR(); // CALL CARD ABILITY FUNCTION
+		// —корее всего это работать не будет =)
+		effPTR(this); // CALL CARD ABILITY FUNCTION
 	}
 	else
 	{
@@ -26,31 +27,40 @@ void Card::playCard()
 	}
 }
 
-void Card::fNone()
+void Card::updStats()
+{
+	manaCost = scrManaCost;
+	Atk = scrAtk;
+	Def = scrDef;
+	maxAtk = Atk;
+	maxDef = Def;
+}
+
+void fNone(Card * scr)
 {
 	// Do nothing
 }
 
-void Card::fBuffStats()
+void fBuffStats(Card * scr)
 {
 	// atr1 = atk
 	// atr2 = def
-	table[player][selected]->Atk += atr1;
+	table[player][selected]->Atk += scr->atr1;
 	table[player][selected]->maxAtk = max(table[player][selected]->Atk, table[player][selected]->maxAtk);
-	table[player][selected]->Def += atr2;
-	table[player][selected]->maxDef += atr2;
+	table[player][selected]->Def += scr->atr2;
+	table[player][selected]->maxDef += scr->atr2;
 }
 
-void Card::fDamage()
+void fDamage(Card * scr)
 {
 	// atr1 = dmg
-	table[1-player][selected]->Def -= atr1;
+	table[1-player][selected]->Def -= scr->atr1;
 }
 
-void Card::fManaUp()
+void fManaUp(Card * scr)
 {
 	// Ќужно создать событие, но у нас нет событий...
-	mana[player] += atr1; // ќна может превысить значение 10.
+	mana[player] += scr->atr1; // ќна может превысить значение 10.
 	//  ак видно не увеличивает максимальный показатель маны
 }
 
@@ -66,7 +76,7 @@ void AddCard(string name, int mana, int atk, int def, string spec)
 	t->scrAtk = atk;
 	t->scrDef = def;
 	t->spec = spec;
-	t->effPTR = t->fNone;
+	t->effPTR = fNone;
 
 	t->isSpell = false;
 	t->isStorm = false;;
@@ -104,6 +114,6 @@ void LoadCards()
 	AddCard("Coin", 0, 0, 0, "a"); 
 	t = DataBase[DataBase.size() - 1];
 	t->atr1 = 1;
-	t->effPTR = t->fManaUp;
+	t->effPTR = fManaUp;
 
 }

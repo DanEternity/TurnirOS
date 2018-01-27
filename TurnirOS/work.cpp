@@ -1,4 +1,21 @@
 #include "work.h"
+#include <algorithm>
+#include <iostream>
+#include <fstream>
+
+int getTableCardCount(int pl)
+{
+	int c = 0;
+	for (int i(0); i < 7; i++)
+		if (tableCheck[pl][i])
+			c++;
+	return c;
+}
+
+void getAction(int & type, int & scr, int & dst, int & param, int & code)
+{
+	
+}
 
 void processAttack(int scr, int trg)
 {
@@ -27,6 +44,27 @@ void processAttack(int scr, int trg)
 	if (table[player][selected]->Def <= 0)
 		destroyCard(player, selected);
 
+}
+
+void processDrawACard(int pl)
+{
+	// Log?
+
+	//
+
+	if (deck[pl].size() == 0)
+	{
+		// Draw fatique (1.. 2.. 3.. 4.. и тд урона)
+
+	}
+}
+
+int getLeftTaunt(int pl)
+{
+	for (int i(0); i < 7; i++)
+		if (tableCheck[1 - pl][i] && table[1 - pl][i]->isTaunt)
+			return i;
+	return -1;
 }
 
 void processPlayCard(int card, int pos, int trg)
@@ -66,7 +104,7 @@ void destroyCard(int side, int pos)
 		/* CARD DESTROYED; LAST WORD ACTIVATED; */
 		/* BUT IN REAL SITUATION WE CANT REMOVE CARD BEFORE LAST WORD ACTIVATED */
 		Card * LW = table[side][pos]; // SAVE POINTER TO LAST WORD CARD */
-		table[side][pos]->effPTR(); // LAST WORD EFFECT SHOULD NOT DESTROY CARD
+		table[side][pos]->effPTR(table[side][pos]); // LAST WORD EFFECT SHOULD NOT DESTROY CARD
 		LW->~Card();
 	}
 	else
@@ -305,4 +343,17 @@ void processTurnMain()
 
 	player = 1 - player;
 
+}
+
+void loadDeck(string filename, int pl)
+{
+	ifstream ins(filename);
+	// read 30 cards (IDs)
+	for (int i(0); i < 30; i++)
+	{
+		int idx;
+		ins >> idx;
+		deck[pl].push_back(new Card(DataBase[idx]));
+		deck[pl][i]->updStats();
+	}
 }

@@ -38,5 +38,6 @@ extern int target;
 // OS information
 
 extern bool refresh;
+extern vector<Card*> DataBase;
 
 int qqq();

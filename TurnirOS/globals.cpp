@@ -31,7 +31,7 @@ int selected;
 int target;
 
 bool refresh = false;
-
+vector<Card*> DataBase;
 
 int qqq()
 {

@@ -30,7 +30,7 @@ bool tableCheck[2][7]; // temp. unit exist true/false
 int selected;
 int target;
 
-
+bool refresh = false;
 
 
 int qqq()

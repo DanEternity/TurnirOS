@@ -35,4 +35,8 @@ extern bool tableCheck[2][7]; // temp. unit exist true/false
 extern int selected;
 extern int target;
 
+// OS information
+
+extern bool refresh;
+
 int qqq();

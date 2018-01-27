@@ -48,6 +48,7 @@ void processPlayCard(int card, int pos, int trg)
 		table[player][selected]->isCanAttack = true;
 		// Вначале хода всем картам на столе нужно устновить флаг isStorm.
 		// Если у карты isCanAttack = false то isStorm устанавливать не нужно
+		tableCheck[player][selected] = true;
 	}
 }
 
@@ -57,7 +58,8 @@ void destroyCard(int side, int pos)
 
 
 	//
-
+	tableCheck[side][pos] = false; // Уничтоженная карта не может стать целью заклинания или эффекта.
+	// Грубо говоря другие эффекты сработавшие параллельно не будут на неё воздействовать
 	if (table[side][pos]->isLastWord) // check to LAST WORD
 	{
 		/* IN LOG THIS SHOULD BE LIKE  */
@@ -160,7 +162,8 @@ void processTurnMain()
 						{
 							// Check target correctness
 
-							if (1 /*Correct*/)
+							if (1 /*Correct*/) // нужно написать общую функцию, которая по айди карты и параметрам разыгровки (по герою, по существу
+								// по своему существу, по вражескому и тд.) будет определять корректен ли такой ход для такой карты)
 							{
 								if (tableCheck[player][dst])
 								{
@@ -168,8 +171,49 @@ void processTurnMain()
 
 									// we should move all other creatures...
 
-									// but i dont want to write this...
+									// будем пытаться сначала переместить вправо
 
+									// найдём пустое место...
+									int emp = -1;
+									for (int i(dst+1); i < 7; i++) // А ВООБЩЕ НАДО БЫЛО СДЕЛАТЬ КАК В SV И ПОСЛАТЬ ИГРОКА НАХУЙ
+										// И ВСЕГДА РАЗЫГРЫВАТЬ В САМУЮ ПРАВУЮ СВОБОДНУЮ ЯЧЕЙКУ АВТОМАТИЧЕСКИ
+										// И да у меня реально есть желание запретить разыгрывать карты в занятые ячейки
+									{
+										if (!tableCheck[player][i])
+										{
+											emp = i;
+											break;
+										}
+									}
+									if (emp == -1)
+									{
+										// Справа места нет. Двигаем влево...
+										for (int i(dst - 1); i >= 0; i--)
+											if (!tableCheck[player][i])
+											{
+												emp = i;
+												break;
+											}
+									}
+									// Очевидно... что теперь место есть... (если его нет, то это бред, потому что существ меньше 7, а ячеек как раз 7)
+									tableCheck[player][emp] = true;
+									if (emp > dst)
+									{
+										// сдвигаем вправо
+										// ЭТО СКОРЕЕ ВСЕГО НУЖНО ЛОГИРОВАТЬ
+										// ПОТОМУ ЧТО ВИЗУАЛЬНО ТО ИЗМЕНЕНИЕ ПРОИЗХОДИТ НА СТОЛЕ
+										for (int i(emp); i > dst + 1; i--)
+											table[player][i] = table[player][i - 1];
+									}
+									else
+									{
+										// сдвигаем влево
+										// ЭТО СКОРЕЕ ВСЕГО НУЖНО ЛОГИРОВАТЬ
+										// ПОТОМУ ЧТО ВИЗУАЛЬНО ТО ИЗМЕНЕНИЕ ПРОИЗХОДИТ НА СТОЛЕ
+										for (int i(emp); i < dst - 1; i++)
+											table[player][i] = table[player][i + 1];
+
+									}
 								}
 
 								processPlayCard(scr, dst, param); // PlayCard
@@ -220,7 +264,7 @@ void processTurnMain()
 		// Можно и флаг возвести
 		// но как-то лень
 		
-		for (int i(0); i < 6; i++)
+		for (int i(0); i < 6; i++) // Этот цикл обязателен я знаю пример, когда без него останется существо с -1 хп и не умрёт
 		{
 			// По крайней мере мы будем уверены, что на столе нет карт с -1 и менее хп)
 			// Но здесь вообще кроется некоторая проблема данной архитектуры.
@@ -233,6 +277,21 @@ void processTurnMain()
 				destroyCard(1-player, i);
 			// Возможно следовало бы сделать какую-нибудь глобальную очередь событий и туда всё пихать.
 			// Я не силён в проектировании таких систем
+		}
+
+		// Это не костыль, это упрощённая модель системы событий
+
+		while (refresh)
+		{
+			refresh = false;
+			for (int i(0); i < 6; i++) 
+			{
+				if (tableCheck[player][i] && table[player][i]->Def <= 0)
+					destroyCard(player, i);
+
+				if (tableCheck[1 - player][i] && table[1 - player][i]->Def <= 0)
+					destroyCard(1 - player, i);
+			}
 		}
 
 	}

@@ -1,5 +1,6 @@
 #pragma once
 #include<globals.h>
+#include<string>
 
 class Card
 {
@@ -7,6 +8,9 @@ public:
 	Card();
 	Card(Card * q);
 	~Card();
+
+	int id;
+	string name;
 
 	int scrManaCost;
 	int scrAtk;
@@ -22,6 +26,8 @@ public:
 	int effect; // ?
 	void (*effPTR)();
 
+
+	string spec;
 	bool isSpell; // IMPORTANT
 	bool isStorm;
 	bool isRush;
@@ -30,6 +36,8 @@ public:
 	bool isTargetable; // IMPORTANT
 	bool isCanAttack;
 	bool isLastWord;
+	bool isFanfare;
+	bool isClash;
 
 	// info
 	bool requredSp;
@@ -58,5 +66,10 @@ public:
 	void fNone();
 	void fBuffStats(); // add atr1 to atk // add atr2 to def // to @selected@ allied unit
 	void fDamage(); // deal atr1 dmg to @selected@ enemy unit // DO NOT COMPLETED
-
+	void fManaUp(); // Give atr1 mana until the end of the turn
 };
+
+vector<Card*> DataBase;
+
+void AddCard(string name, int mana, int atk, int def, string spec);
+void LoadCards();

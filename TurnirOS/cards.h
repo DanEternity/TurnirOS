@@ -1,9 +1,11 @@
 #pragma once
-#include<globals.h>
-#include<string>
-#include<vector>
 
-using namespace std;
+#include "globals.h"
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using std::string;
 
 class Card
 {
@@ -27,10 +29,10 @@ public:
 	int maxDef;
 
 	int effect; // ?
-	void (*effPTR)(Card * scr);
+	void (*effPTR)(Card * scr);//Указатель на йункцию эффекта
 
-
-	string spec;
+	string spec;//Строка спецификаторов карты
+	//Флаги особенностей карты
 	bool isSpell; // IMPORTANT
 	bool isStorm;
 	bool isRush;
@@ -43,20 +45,17 @@ public:
 	bool isClash;
 
 	// info
-	bool requredSp;
+	bool requredSp;//Есть ли дополнительные особенности карты, которые проявляются при розыгрыше
 	int atr1;
 	int atr2;
 	int atr3;
 
-	void playCard();
-	void updStats();
-	
+	void playCard();//Разыграть карту
+	void updStats();//Обновить характеристики
 };
 
-
-
-void AddCard(string name, int mana, int atk, int def, string spec);
-void LoadCards();
+void AddCard(string name, int mana, int atk, int def, string spec);//Добавить карту
+void LoadCards();//Загрузить карты
 
 // Card abilities/fuctions
 

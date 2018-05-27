@@ -10,69 +10,105 @@ int getTableCardCount(int pl)
 	return c;
 }
 
+void make_tokens(std::stringstream &s, CHAR st[BUFSIZE], int size)
+{
+	bool letter_flag = false;
+	for (int i(0); i < size; i++)
+		if (st[i] != ' ')
+		{
+				s << st[i];//встретили обычный символ
+				letter_flag = true;
+		}
+		else if (letter_flag)//встретили пробел
+		{
+			s << '\n';//но до этого были символы. Объединяем в токен
+			letter_flag = false;
+		}
+	
+	return;
+}
+
+void readPlayerPipe()
+{
+	CHAR chBuf[BUFSIZE];
+	DWORD size(0);
+	DWORD avail;
+
+	DWORD exit = 0;
+
+	if (player == 0)//Первый игрок
+	{
+		PeekNamedPipe(hChildStdout_R1, chBuf, BUFSIZE, &size, &avail, NULL);//Если в канале что-то есть
+		if (avail != 0)
+		{
+			ZeroMemory(&chBuf, sizeof(chBuf));//Считаем содержимое канала
+			ReadFromPipe(hChildStdout_R1, hChildStdout_W1, chBuf, avail);
+			std::cout << "Get from 1: " << chBuf << std::endl;
+			make_tokens(que1, chBuf, avail);
+		}
+	}
+	else//Второй игрок
+	{
+		PeekNamedPipe(hChildStdout_R2, chBuf, BUFSIZE, &size, &avail, NULL);
+		if (avail != 0)
+		{
+			ZeroMemory(&chBuf, sizeof(chBuf));
+			ReadFromPipe(hChildStdout_R2, hChildStdout_W2, chBuf, avail);
+			std::cout << "Get from 2: " << chBuf << std::endl;
+			make_tokens(que2, chBuf, avail);
+		}
+	}
+}
+
+int getArgumentCount()
+{
+	return 2;//Hi-hi
+}
+
 void getAction(int & type, int & scr, int & dst, int & param, int & code)
 {
-	if (debugVal == 0)
-	{
-		type = 1;
-		scr = 0;
-		dst = 1;
-		param = 0;
-		code = 0;
-		debugVal++;
-		return;
-	}
-	if (debugVal == 1)
-	{
-		type = 3;
-		debugVal++;
-		return;
-	}
-	if (debugVal == 2)
-	{
-		type = 1;
-		scr = 0;
-		dst = 1;
-		param = 0;
-		code = 0;
-		debugVal++;
-		return;
-	}
-	if (debugVal == 3)
-	{
-		type = 3;
-		debugVal++;
-		return;
-	}
+	int args[3];
+	string name, arg;
 
-	if (debugVal == 4)
+	int col = getArgumentCount();
+	if (player == 0)
 	{
-		type = 2;
-		scr = 1;
-		dst = 1;
-		param = 0;
-		code = 0;
-		debugVal++;
-		return;
+		que1 >> name;
+		for (int i(0); i < col; i++)
+		{
+			que1 >> arg;
+			try
+			{
+				args[i] = std::stoi(arg, nullptr, 10);
+			}
+			catch (...)
+			{
+				throw (const char *)"KEK";
+			}
+		}
 	}
-
-	if (debugVal == 5)
+	else
 	{
-		type = 3;
-		debugVal++;
-		return;
+		que1 >> name;
+		for (int i(0); i < col; i++)
+		{
+			que1 >> arg;
+			try
+			{
+				args[i] = std::stoi(arg, nullptr, 10);
+			}
+			catch (...)
+			{
+				throw (const char *)"KEK";
+			}
+		}
 	}
-
-	if (debugVal == 6)
-	{
-		type = 2;
-		scr = 1;
-		dst = 1;
-		param = 0;
-		code = 0;
-		debugVal++;
-		return;
-	}
+	if (col >= 1)
+		scr = args[0];
+	if (col >= 2)
+		dst = args[1];
+	if (col >= 3)
+		param = args[2];
 }
 
 void processAttack(int scr, int trg)

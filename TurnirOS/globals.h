@@ -1,6 +1,7 @@
 #pragma once
 #include <cards.h>
 #include <vector>
+#include <fstream>
 
 using namespace std; 
 
@@ -39,5 +40,7 @@ extern int target;
 
 extern bool refresh;
 extern vector<Card*> DataBase;
-
+extern int debugVal;
+extern ofstream Qlog;
+extern bool gameExit;
 int qqq();

@@ -78,3 +78,5 @@ void fNone(Card * scr);
 void fBuffStats(Card * scr); // add atr1 to atk // add atr2 to def // to @selected@ allied unit
 void fDamage(Card * scr); // deal atr1 dmg to @selected@ enemy unit // DO NOT COMPLETED
 void fManaUp(Card * scr); // Give atr1 mana until the end of the turn
+void fFreeze(Card * scr); // Freeze enemy; He will lost his next turn
+void fLWCreateCreature(Card * scr); // Create creature with ID = atr1

@@ -32,6 +32,9 @@ int target;
 
 bool refresh = false;
 vector<Card*> DataBase;
+int debugVal = 0;
+ofstream Qlog("log.txt");
+bool gameExit = false;
 
 int qqq()
 {

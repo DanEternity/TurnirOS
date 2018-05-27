@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 
+
 int getTableCardCount(int pl)
 {
 	int c = 0;
@@ -14,7 +15,67 @@ int getTableCardCount(int pl)
 
 void getAction(int & type, int & scr, int & dst, int & param, int & code)
 {
-	
+	if (debugVal == 0)
+	{
+		type = 1;
+		scr = 0;
+		dst = 1;
+		param = 0;
+		code = 0;
+		debugVal++;
+		return;
+	}
+	if (debugVal == 1)
+	{
+		type = 3;
+		debugVal++;
+		return;
+	}
+	if (debugVal == 2)
+	{
+		type = 1;
+		scr = 0;
+		dst = 1;
+		param = 0;
+		code = 0;
+		debugVal++;
+		return;
+	}
+	if (debugVal == 3)
+	{
+		type = 3;
+		debugVal++;
+		return;
+	}
+
+	if (debugVal == 4)
+	{
+		type = 2;
+		scr = 1;
+		dst = 1;
+		param = 0;
+		code = 0;
+		debugVal++;
+		return;
+	}
+
+	if (debugVal == 5)
+	{
+		type = 3;
+		debugVal++;
+		return;
+	}
+
+	if (debugVal == 6)
+	{
+		type = 2;
+		scr = 1;
+		dst = 1;
+		param = 0;
+		code = 0;
+		debugVal++;
+		return;
+	}
 }
 
 void processAttack(int scr, int trg)
@@ -28,7 +89,8 @@ void processAttack(int scr, int trg)
 	table[player][selected]->Def -= table[1-player][target]->Atk;
 
 	/* LOG? */
-
+	Qlog << player << " ATTACK " << scr << ' ' << trg << "   " << table[player][selected]->Atk << " dmg" << endl;
+	Qlog << 1-player << " ATTACK " << trg << ' ' << scr << "   " << table[1-player][selected]->Atk << " dmg" << endl;
 	/* ADD EFFECT IF CURSE */
 
 	// tmp check death
@@ -49,13 +111,26 @@ void processAttack(int scr, int trg)
 void processDrawACard(int pl)
 {
 	// Log?
-
+	
 	//
 
 	if (deck[pl].size() == 0)
 	{
 		// Draw fatique (1.. 2.. 3.. 4.. и тд урона)
 
+	}
+	else
+	{
+		if (hand[pl].size() == 9)
+		{
+			// log
+			// discard card
+			delete hand[pl][0];
+		}
+		else
+			hand[pl].push_back(deck[pl][0]);
+		deck[pl].erase(deck[pl].begin() + 0);
+		
 	}
 }
 
@@ -93,7 +168,7 @@ void processPlayCard(int card, int pos, int trg)
 void destroyCard(int side, int pos)
 {
 	// add to log?
-
+	Qlog << side << " DESTROYED " << pos << endl;
 
 	//
 	tableCheck[side][pos] = false; // Уничтоженная карта не может стать целью заклинания или эффекта.
@@ -108,7 +183,13 @@ void destroyCard(int side, int pos)
 		LW->~Card();
 	}
 	else
-		table[side][pos]->~Card();
+	{
+	//	table[side][pos]->~Card();
+		Card * tmp = table[side][pos];
+		//tmp->~Card();
+		delete tmp;
+	}
+	table[side][pos] = NULL;
 	
 }
 
@@ -129,6 +210,10 @@ void processTurnMain()
 
 	// ACTIVATING START TURN ABILITIES
 	// if they exist...
+
+	for (int i(0); i < 7; i++)
+		if (tableCheck[player][i])
+			table[player][i]->isStorm = true;
 
 	// Actually start of the turn
 
@@ -171,7 +256,7 @@ void processTurnMain()
 
 			// CHECK IF MANA AVAILABLE
 			
-			if (hand[player][scr]->manaCost)
+			if (hand[player][scr]->manaCost <= mana[player])
 			{
 				// We want to play hand[player][scr] card
 				if (hand[player][scr] -> isSpell)
@@ -200,101 +285,129 @@ void processTurnMain()
 						{
 							// Check target correctness
 
-							if (1 /*Correct*/) // нужно написать общую функцию, которая по айди карты и параметрам разыгровки (по герою, по существу
+							if (0 /*Correct*/) // нужно написать общую функцию, которая по айди карты и параметрам разыгровки (по герою, по существу
 								// по своему существу, по вражескому и тд.) будет определять корректен ли такой ход для такой карты)
 							{
-								if (tableCheck[player][dst])
+								break;
+							}	
+						}
+						if (tableCheck[player][dst])
+						{
+							// ZONE IS NOT AVAILABLE
+
+							// we should move all other creatures...
+
+							// будем пытаться сначала переместить вправо
+
+							// найдём пустое место...
+							int emp = -1;
+							for (int i(dst+1); i < 7; i++) // А ВООБЩЕ НАДО БЫЛО СДЕЛАТЬ КАК В SV И ПОСЛАТЬ ИГРОКА НАХУЙ
+								// И ВСЕГДА РАЗЫГРЫВАТЬ В САМУЮ ПРАВУЮ СВОБОДНУЮ ЯЧЕЙКУ АВТОМАТИЧЕСКИ
+								// И да у меня реально есть желание запретить разыгрывать карты в занятые ячейки
+							{
+								if (!tableCheck[player][i])
 								{
-									// ZONE IS NOT AVAILABLE
-
-									// we should move all other creatures...
-
-									// будем пытаться сначала переместить вправо
-
-									// найдём пустое место...
-									int emp = -1;
-									for (int i(dst+1); i < 7; i++) // А ВООБЩЕ НАДО БЫЛО СДЕЛАТЬ КАК В SV И ПОСЛАТЬ ИГРОКА НАХУЙ
-										// И ВСЕГДА РАЗЫГРЫВАТЬ В САМУЮ ПРАВУЮ СВОБОДНУЮ ЯЧЕЙКУ АВТОМАТИЧЕСКИ
-										// И да у меня реально есть желание запретить разыгрывать карты в занятые ячейки
-									{
-										if (!tableCheck[player][i])
-										{
-											emp = i;
-											break;
-										}
-									}
-									if (emp == -1)
-									{
-										// Справа места нет. Двигаем влево...
-										for (int i(dst - 1); i >= 0; i--)
-											if (!tableCheck[player][i])
-											{
-												emp = i;
-												break;
-											}
-									}
-									// Очевидно... что теперь место есть... (если его нет, то это бред, потому что существ меньше 7, а ячеек как раз 7)
-									tableCheck[player][emp] = true;
-									if (emp > dst)
-									{
-										// сдвигаем вправо
-										// ЭТО СКОРЕЕ ВСЕГО НУЖНО ЛОГИРОВАТЬ
-										// ПОТОМУ ЧТО ВИЗУАЛЬНО ТО ИЗМЕНЕНИЕ ПРОИЗХОДИТ НА СТОЛЕ
-										for (int i(emp); i > dst + 1; i--)
-											table[player][i] = table[player][i - 1];
-									}
-									else
-									{
-										// сдвигаем влево
-										// ЭТО СКОРЕЕ ВСЕГО НУЖНО ЛОГИРОВАТЬ
-										// ПОТОМУ ЧТО ВИЗУАЛЬНО ТО ИЗМЕНЕНИЕ ПРОИЗХОДИТ НА СТОЛЕ
-										for (int i(emp); i < dst - 1; i++)
-											table[player][i] = table[player][i + 1];
-
-									}
+									emp = i;
+									break;
 								}
-
-								processPlayCard(scr, dst, param); // PlayCard
+							}
+							if (emp == -1)
+							{
+								// Справа места нет. Двигаем влево...
+								for (int i(dst - 1); i >= 0; i--)
+									if (!tableCheck[player][i])
+									{
+										emp = i;
+										break;
+									}
+							}
+							// Очевидно... что теперь место есть... (если его нет, то это бред, потому что существ меньше 7, а ячеек как раз 7)
+							tableCheck[player][emp] = true;
+							if (emp > dst)
+							{
+								// сдвигаем вправо
+								// ЭТО СКОРЕЕ ВСЕГО НУЖНО ЛОГИРОВАТЬ
+								// ПОТОМУ ЧТО ВИЗУАЛЬНО ТО ИЗМЕНЕНИЕ ПРОИЗХОДИТ НА СТОЛЕ
+								for (int i(emp); i > dst + 1; i--)
+									table[player][i] = table[player][i - 1];
 							}
 							else
 							{
-								// LOG ERROR
-							}
+								// сдвигаем влево
+								// ЭТО СКОРЕЕ ВСЕГО НУЖНО ЛОГИРОВАТЬ
+								// ПОТОМУ ЧТО ВИЗУАЛЬНО ТО ИЗМЕНЕНИЕ ПРОИЗХОДИТ НА СТОЛЕ
+								for (int i(emp); i < dst - 1; i++)
+									table[player][i] = table[player][i + 1];
 
+							}
 						}
-					}
-			}
-			else
-			{
-				// LOG ERROR
-				// NOT ENOUGTH MANA
-			}
+						Qlog << player << " PLAYCARD " << scr << ' ' << dst << ' ' << param << endl;
+						mana[player] -= hand[player][scr]->manaCost;
+						processPlayCard(scr, dst, param); // PlayCard
+						delete (hand[player][scr]);
+						hand[player].erase(hand[player].begin() + scr);
+						
+					}					
+				}
+				else
+				{
+					// LOG ERROR
+					// NOT ENOUGTH MANA
+				}
 			break;
 		case 2: // ATTACK
 		{
-			// Здесь всё сложнее...
-
-			// Проверка на удар по провокациям...
-
-			int tt = getLeftTaunt(player); // res < 0 если таунтов вообще нет
-
-			if (tt < 0)
-				processAttack(scr, dst);
-			else
+			if (tableCheck[player][scr] && table[player][scr]->isStorm)
 			{
-				if (tableCheck[1-player][dst] && table[1 - player][dst]->isTaunt)
-					processAttack(scr, dst); // ЕСЛИ МЫ И ТАК АТАКУЕМ ПРОВОКАЦИЮ, ТО ПОФИГ
+				if (dst != -1 && tableCheck[1 - player][dst])
+				{
+					// Здесь всё сложнее...
+					table[player][scr]->isStorm = false;
+					// Проверка на удар по провокациям...
+
+					int tt = getLeftTaunt(player); // res < 0 если таунтов вообще нет
+
+					if (tt < 0)
+						processAttack(scr, dst);
+					else
+					{
+						if (tableCheck[1 - player][dst] && table[1 - player][dst]->isTaunt)
+							processAttack(scr, dst); // ЕСЛИ МЫ И ТАК АТАКУЕМ ПРОВОКАЦИЮ, ТО ПОФИГ
+						else
+							processAttack(scr, tt); // АТАКОВАТЬ ПРОВОКАЦИЮ
+					}
+				}
 				else
-					processAttack(scr, tt); // АТАКОВАТЬ ПРОВОКАЦИЮ
+				{
+					if (dst == -1)
+					{
+						table[player][scr]->isStorm = false;
+						int tt = getLeftTaunt(player); // res < 0 если таунтов вообще нет
+						if (tt < 0)
+						{
+							Qlog << player << " ATTACK " << scr << ' ' << -1 << "   " << table[player][scr]->Atk << " dmg" << endl;
+							health[1 - player] -= table[player][scr]->Atk;
+						}
+						else
+						{
+							if (tableCheck[1 - player][dst] && table[1 - player][dst]->isTaunt)
+								processAttack(scr, dst); // ЕСЛИ МЫ И ТАК АТАКУЕМ ПРОВОКАЦИЮ, ТО ПОФИГ
+							else
+								processAttack(scr, tt); // АТАКОВАТЬ ПРОВОКАЦИЮ
+						}
+					}
+				}
 			}
-			
 			break;
 		}
 		/* Запросы вроде getHand и getTable можно отвечать сразу же, а не пихать в этот цикл */
-		default: // I DONT THINK THAT THIS IS REALLY POSSIBLE =)
+		default: 
 			break;
 		}
-
+		if (type == 3)
+		{
+			break;
+		}
 		// Проверяем если кто-то у кого хп <= 0 
 		// На всякий случай
 		// Curse теоритически убивает сразу, поэтому проблем с -999 быть не должно
@@ -330,6 +443,20 @@ void processTurnMain()
 				if (tableCheck[1 - player][i] && table[1 - player][i]->Def <= 0)
 					destroyCard(1 - player, i);
 			}
+		}
+
+		if (health[0] <= 0)
+		{
+			Qlog << "PLAYER 1 DEFEATED" << endl;
+			gameExit = true;
+			break;
+		}
+
+		if (health[1] <= 0)
+		{
+			Qlog << "PLAYER 2 DEFEATED" << endl;
+			gameExit = true;
+			break;
 		}
 
 	}

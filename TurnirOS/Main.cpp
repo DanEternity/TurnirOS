@@ -5,6 +5,8 @@
 #include<globals.h>
 #include<cards.h>
 #include<work.h>
+#include "Main.h"
+
 
 using namespace std;
 
@@ -35,9 +37,29 @@ int main()
 	{
 		loadDeck("test.txt", 0);
 		loadDeck("test.txt", 1);
+		processDrawACard(0);
+		processDrawACard(0);
+		processDrawACard(0);
+		processDrawACard(1);
+		processDrawACard(1);
+		processDrawACard(1);
+		processDrawACard(1);
+	}
+
+	cout << "READY" << endl;
+
+	if (debugMode)
+	{
+		player = 0;
+		while (!gameExit)
+		{
+			processTurnMain();
+		}
+
 	}
 
 
+	system("PAUSE");
 
 	return 0;
 }

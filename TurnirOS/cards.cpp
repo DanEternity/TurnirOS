@@ -1,5 +1,4 @@
 #include "cards.h"
-#include <algorithm>
 
 Card::Card()
 {
@@ -153,9 +152,10 @@ void AddCard(string name, int mana, int atk, int def, string spec)
 void LoadCards()
 {
 	Card * t; // Эта переменная чисто для сокращения кода
-	/* Функция загружает все карты в базу данных*/
 	
-	AddCard("Coin", 0, 0, 0, "a"); 
+	//Функция загружает все карты в базу данных
+	
+	AddCard("Coin", 0, 0, 0, "a");//Добавить монетку 
 	t = DataBase[DataBase.size() - 1];
 	t->atr1 = 1;
 	t->effPTR = fManaUp;

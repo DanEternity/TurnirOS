@@ -1,7 +1,4 @@
 #include "work.h"
-#include <algorithm>
-#include <iostream>
-#include <fstream>
 
 
 int getTableCardCount(int pl)
@@ -105,7 +102,6 @@ void processAttack(int scr, int trg)
 
 	if (table[player][selected]->Def <= 0)
 		destroyCard(player, selected);
-
 }
 
 void processDrawACard(int pl)
@@ -201,12 +197,10 @@ void processTurnMain()
 
 	// INIT
 	
-	maxMana[player] = min(10, maxMana[player] + 1);
-	mana[player] = maxMana[player];
-
-	// DRAW A CARD
+	maxMana[player] = min(10, maxMana[player] + 1);//Начисление максимального количества маны
+	mana[player] = maxMana[player];//Начисление доступного количества маны
 	
-	processDrawACard(player);
+	processDrawACard(player);//Взятие карты игроком
 
 	// ACTIVATING START TURN ABILITIES
 	// if they exist...
@@ -219,7 +213,6 @@ void processTurnMain()
 
 	while (1)
 	{
-
 		// Here 2(3) types of actions
 		// 1: PLAY A CARD
 		// 2: Attack an enemy (hero, creature)
@@ -235,7 +228,7 @@ void processTurnMain()
 		int param;
 		int code;
 
-		getAction(type, scr, dst, param, code); // get an Action
+		getAction(type, scr, dst, param, code); //Функция получения команды от игрока
 
 		switch (type)
 		{
@@ -475,12 +468,14 @@ void processTurnMain()
 void loadDeck(string filename, int pl)
 {
 	ifstream ins(filename);
-	// read 30 cards (IDs)
-	for (int i(0); i < 30; i++)
+	
+	for (int i(0); i < 30; i++)//Считаем 30 карт из файла игрока
 	{
-		int idx;
+		int idx;//Индекс карты в базе
 		ins >> idx;
 		deck[pl].push_back(new Card(DataBase[idx]));
 		deck[pl][i]->updStats();
 	}
+
+	ins.close();
 }

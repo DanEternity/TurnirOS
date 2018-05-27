@@ -7,12 +7,11 @@
 #include<work.h>
 #include "Main.h"
 
-
 using namespace std;
 
-//KEK
+const bool debugMode = true;
 
-int main()
+void initAll()
 {
 	const bool debugMode = true;
 
@@ -22,17 +21,36 @@ int main()
 
 	mana[0] = 0;
 	mana[1] = 0;
-	maxMana[0] = 0;
 	maxMana[1] = 0;
-	health[0] = 30;
 	health[1] = 30;
+
+	//Установим текущий ход как первый
 	turn = 0;
+
+	//Обнулим поле
 	for (int i(0); i < 2; i++)
 		for (int j(0); j < 7; j++)
 			tableCheck[i][j] = false;
+}
 
+void createPlayers()
+{
+	ifstream input;
+	input.open("testProg.txt");
+	string name1, name2;
+	
+	input >> name1 >> name2;
+	//RunProcess(name1, )
+	//RunProcess(name2, );
+}
 
-	LoadCards();
+int main()
+{
+	createLog();//Создадим лог-файл
+	initAll();//Инициализируем всё
+	createPlayers();
+
+	LoadCards();//Загрузим все карты
 
 	if (debugMode)
 	{

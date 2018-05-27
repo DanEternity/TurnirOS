@@ -36,13 +36,18 @@ int qqq()
 {
 	return 0;
 }
+std::stringstream que1, que2;
+HANDLE hChildStdin_R1, hChildStdin_W1;
+HANDLE hChildStdout_R1, hChildStdout_W1;
 
-extern HANDLE hChildStdin_R1, hChildStdin_W1;
-extern HANDLE hChildStdout_R1, hChildStdout_W1;
+HANDLE hChildStdin_R2, hChildStdin_W2;
+HANDLE hChildStdout_R2, hChildStdout_W2;
 
-extern HANDLE hChildStdin_R2, hChildStdin_W2;
-extern HANDLE hChildStdout_R2, hChildStdout_W2;
+PROCESS_INFORMATION pi1, pi2;
 
+
+
+map<string, int>COMMANDS = { { "play", 0 },{ "attack", 1 },{ "endturn", 2 } };
 //Функции для работы с дочерними процессами
 
 void WriteToPipe(HANDLE read, HANDLE write, CHAR chBuf[], int size)

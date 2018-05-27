@@ -1,4 +1,6 @@
 #include "work.h"
+#include <Windows.h>
+#include "globals.h"
 
 
 int getTableCardCount(int pl)

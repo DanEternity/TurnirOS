@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <sstream>
 
 /*
 void WriteToPipe(HANDLE read, HANDLE write, CHAR chBuf[], int size);
@@ -41,19 +42,19 @@ void closeLog();
 
 using namespace std; 
 
-std::stringstream que1, que2;
+extern std::stringstream que1, que2;
 
-HANDLE hChildStdin_R1, hChildStdin_W1;
-HANDLE hChildStdout_R1, hChildStdout_W1;
+extern HANDLE hChildStdin_R1, hChildStdin_W1;
+extern HANDLE hChildStdout_R1, hChildStdout_W1;
 
-HANDLE hChildStdin_R2, hChildStdin_W2;
-HANDLE hChildStdout_R2, hChildStdout_W2;
+extern HANDLE hChildStdin_R2, hChildStdin_W2;
+extern HANDLE hChildStdout_R2, hChildStdout_W2;
 
-PROCESS_INFORMATION pi1, pi2;
+extern PROCESS_INFORMATION pi1, pi2;
 
 const int BUFSIZE = 64;
 
-map<string, int>COMMANDS = { {"play", 0}; {"attack", 1}; {"endturn", 2} };
+extern map<string, int>COMMANDS;
 
 class Card;
 
@@ -85,18 +86,7 @@ extern vector<Card*> DataBase;
 
 extern ofstream *logFile;
 
-//Трубы для первого дочернего процесса
-extern HANDLE hChildStdin_R1, hChildStdin_W1;//Труба для потока ввода
-extern HANDLE hChildStdout_R1, hChildStdout_W1;//Труба для потока вывода
-//Возможно стоит добавить трубы для потока ошибок.
-//Или же объединить его с потоком вывода
 
-//Трубы для второго дочернего процесса
-extern HANDLE hChildStdin_R2, hChildStdin_W2;
-extern HANDLE hChildStdout_R2, hChildStdout_W2;
-
-//Размер буфера для передачи/получения информации от дочерних процессов
-const int BUFSIZE = 64;
 
 void WriteToPipe(HANDLE read, HANDLE write, CHAR chBuf[], int size);
 void ReadFromPipe(HANDLE read, HANDLE write, CHAR chBuf[], DWORD size);

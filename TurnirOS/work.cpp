@@ -69,6 +69,8 @@ int getArgumentCount()
 
 void getAction(int & type, int & scr, int & dst, int & param, int & code)
 {
+	readPlayerPipe();
+
 	int args[3];
 	string name, arg;
 
@@ -91,10 +93,10 @@ void getAction(int & type, int & scr, int & dst, int & param, int & code)
 	}
 	else
 	{
-		que1 >> name;
+		que2 >> name;
 		for (int i(0); i < col; i++)
 		{
-			que1 >> arg;
+			que2 >> arg;
 			try
 			{
 				args[i] = std::stoi(arg, nullptr, 10);

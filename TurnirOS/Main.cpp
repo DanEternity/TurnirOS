@@ -6,6 +6,7 @@
 #include<cards.h>
 #include<work.h>
 #include "Main.h"
+#include "ProcessWork.h"
 
 using namespace std;
 
@@ -54,6 +55,7 @@ int main()
 
 	if (debugMode)
 	{
+		createProcesses("p1.exe", "p2.exe");
 		loadDeck("test.txt", 0);
 		loadDeck("test.txt", 1);
 		processDrawACard(0);

@@ -47,7 +47,7 @@ PROCESS_INFORMATION pi1, pi2;
 
 
 
-map<string, int>COMMANDS = { { "play", 0 },{ "attack", 1 },{ "endturn", 2 } };
+map<string, int>COMMANDS = { { "-PLAY", 0 },{ "-ATTACK", 1 },{ "-END_TURN", 2 },{ "-GET_TABLE", 3}, {"-GET_INFO",4}, {"-GET_HAND",5}, {"-CONCEDE", 6} };
 //Функции для работы с дочерними процессами
 
 void WriteToPipe(HANDLE read, HANDLE write, CHAR chBuf[], int size)

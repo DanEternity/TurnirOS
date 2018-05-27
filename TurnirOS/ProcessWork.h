@@ -4,59 +4,7 @@
 #include <sstream>
 #include "globals.h"
 
-void WriteToPipe(HANDLE read, HANDLE write, CHAR chBuf[], int size)
-{
-	DWORD dwWritten;
-	BOOL bSuccess = FALSE;
 
-	bSuccess = WriteFile(write, chBuf, size, &dwWritten, NULL);
-}
-
-void ReadFromPipe(HANDLE read, HANDLE write, CHAR chBuf[], DWORD size)
-{
-	BOOL bSuccess = FALSE;
-
-	bSuccess = ReadFile(read, chBuf, BUFSIZE, &size, NULL);
-}
-
-BOOL RunProcess(const char *lpApplicationName, HANDLE pipeRead, HANDLE pipeWrite, DWORD dwWaitMilliseconds, PROCESS_INFORMATION &PI, STARTUPINFOA &SI)
-{
-	STARTUPINFOA si;
-	PROCESS_INFORMATION pi;
-
-	ZeroMemory(&si, sizeof(si));
-	ZeroMemory(&pi, sizeof(pi));
-
-	si.cb = sizeof(si);
-
-	si.hStdInput = pipeRead;
-	si.hStdOutput = pipeWrite;
-	si.dwFlags |= STARTF_USESTDHANDLES;
-
-	if (!CreateProcessA(const_cast<LPSTR>(lpApplicationName),
-		"",
-		NULL,
-		NULL,
-		TRUE,
-		0,
-		NULL,
-		NULL,
-		&si,
-		&pi)
-		)
-	{
-		std::cout << "CreateProcess failed [" << GetLastError() << "]\n";
-		return FALSE;
-	}
-
-	//CloseHandle(pipeRead);
-	//CloseHandle(pipeWrite);
-
-	PI = pi;
-	SI = si;
-
-	return TRUE;
-}
 
 BOOL createProcesses(std::string st1, std::string st2)
 {

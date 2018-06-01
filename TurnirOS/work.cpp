@@ -77,7 +77,7 @@ void readPlayerPipe()
 
 	DWORD exit = 0;
 
-	if (player == 0)//Ïåðâûé èãðîê
+	//Ïåðâûé èãðîê
 	{
 		PeekNamedPipe(hChildStdout_R1, chBuf, BUFSIZE, &size, &avail, NULL);//Åñëè â êàíàëå ÷òî-òî åñòü
 		if (avail != 0)
@@ -88,7 +88,7 @@ void readPlayerPipe()
 			make_tokens(que1, chBuf, avail);
 		}
 	}
-	else//Âòîðîé èãðîê
+	//Âòîðîé èãðîê
 	{
 		PeekNamedPipe(hChildStdout_R2, chBuf, BUFSIZE, &size, &avail, NULL);
 		if (avail != 0)
@@ -109,14 +109,78 @@ int getArgumentCount()
 void getAction(int & type, int & scr, int & dst, int & param, int & code)
 {
 	readPlayerPipe();
-
+	if (gameStart)
+	{
+		int col = 4;
+		int args[4];
+		//que1 >> name;
+		for (int i(0); i < col; i++)
+		{
+			string arg;
+			que2 >> arg;
+			try
+			{
+				args[i] = std::stoi(arg, nullptr, 10);
+			}
+			catch (...)
+			{
+				throw (const char *)"KEK";
+			}
+		}
+		param = args[0] * 1000 + args[1] * 100 + args[2] * 10 + args[3];
+		col = 3;
+		for (int i(0); i < col; i++)
+		{
+			string arg;
+			que1 >> arg;
+			try
+			{
+				args[i] = std::stoi(arg, nullptr, 10);
+			}
+			catch (...)
+			{
+				throw (const char *)"KEK";
+			}
+		}
+		code = args[0] * 100 + args[1] * 10 + args[2];
+		return;
+	}
 	int args[3];
 	string name, arg;
 
-	int col = getArgumentCount();
 	if (player == 0)
 	{
 		que1 >> name;
+		if (COMMANDS.find(name) == COMMANDS.end())
+		{
+			cout << "ERROR -> " << 0 << " write: " << name << endl;
+			return;
+		}
+		type = COMMANDS.find(name)->second;
+
+		if (name == "-GET_HAND")
+		{
+			getHand(player);
+			
+			return;
+		}
+		if (name == "-GET_TABLE")
+		{
+			getTable(player);
+			
+			return;
+		}
+		if (name == "-GET_INFO")
+		{
+			getInfo(player);
+			
+			return;
+		}
+		if (name == "-END_TURN")
+		{
+			return;
+		}
+		int col = getArgumentCount();
 		for (int i(0); i < col; i++)
 		{
 			que1 >> arg;
@@ -133,6 +197,36 @@ void getAction(int & type, int & scr, int & dst, int & param, int & code)
 	else
 	{
 		que2 >> name;
+		if (COMMANDS.find(name) == COMMANDS.end())
+		{
+			cout << "ERROR -> " << 0 << " write " << name << endl;
+			return;
+		}
+		type = COMMANDS.find(name)->second;
+
+		if (name == "-GET_HAND")
+		{
+			getHand(player);
+			//type = 4;
+			return;
+		}
+		if (name == "-GET_TABLE")
+		{
+			getTable(player);
+			//type = 5;
+			return;
+		}
+		if (name == "-GET_INFO")
+		{
+			getInfo(player);
+			//type = 6;
+			return;
+		}
+		if (name == "-END_TURN")
+		{
+			return;
+		}
+		int col = getArgumentCount();
 		for (int i(0); i < col; i++)
 		{
 			que2 >> arg;
@@ -146,12 +240,12 @@ void getAction(int & type, int & scr, int & dst, int & param, int & code)
 			}
 		}
 	}
-	if (col >= 1)
-		scr = args[0];
-	if (col >= 2)
-		dst = args[1];
-	if (col >= 3)
-		param = args[2];
+	//if (col >= 1)
+	scr = args[0];
+	//if (col >= 2)
+	dst = args[1];
+	//if (col >= 3)
+	param = args[2] % 30;
 }
 
 void processAttack(int scr, int trg)
@@ -402,7 +496,7 @@ void processTurnMain()
 								// ñäâèãàåì âïðàâî
 								// ÝÒÎ ÑÊÎÐÅÅ ÂÑÅÃÎ ÍÓÆÍÎ ËÎÃÈÐÎÂÀÒÜ
 								// ÏÎÒÎÌÓ ×ÒÎ ÂÈÇÓÀËÜÍÎ ÒÎ ÈÇÌÅÍÅÍÈÅ ÏÐÎÈÇÕÎÄÈÒ ÍÀ ÑÒÎËÅ
-								for (int i(emp); i > dst + 1; i--)
+								for (int i(emp); i >= dst + 1; i--)
 									table[player][i] = table[player][i - 1];
 							}
 							else
@@ -537,6 +631,8 @@ void processTurnMain()
 			break;
 		}
 
+		Sleep(200);
+
 	}
 
 	// End of the turn
@@ -587,7 +683,7 @@ void getTable(int pl)
 	for (int i(0); i<7; i++)
 		if (tableCheck[1-pl][i])
 		{
-			addToMessage(1-pl, to_string(i) + ' ' + to_string(table[1-pl][i]->id) + ' ' + to_string(table[1-pl][i]->scrManaCost)
+			addToMessage(pl, to_string(i) + ' ' + to_string(table[1-pl][i]->id) + ' ' + to_string(table[1-pl][i]->scrManaCost)
 				+ ' ' + to_string(table[1-pl][i]->Atk) + ' ' + to_string(table[1-pl][i]->Def) + ' ' + ((!table[1-pl][i]->isCanAttack) ? '-' : ((table[1-pl][i]->isRush || table[1-pl][i]->isStorm) ? '+' : '-'))
 				+ ' ' + table[1-pl][i]->spec + '\n');
 		}
@@ -608,7 +704,7 @@ void getHand(int pl)
 }
 
 void getInfo(int pl)
-{
+{ 
 	addToMessage(pl, to_string(turn) + ' ' + to_string(mana[pl]) + ' ' + to_string(maxMana[pl]) + ' ' + to_string(mana[1 - pl])
 		+ ' ' + to_string(maxMana[1 - pl]) + ' ' + to_string(hand[1 - pl].size()) + ' ' + to_string(deck[pl].size()) + ' '
 		+ to_string(deck[1 - pl].size()) + '\n');
@@ -628,4 +724,12 @@ void shuffleDeck(int pl)
 		Qlog << deck[pl][i]->id << ' ';
 	}
 	Qlog << endl;
+}
+
+void writeHod(int pl)
+{
+	addToMessage(0, to_string(1) + '\n');
+	sendMessage(0);
+	addToMessage(1, to_string(2) + '\n');
+	sendMessage(1);
 }

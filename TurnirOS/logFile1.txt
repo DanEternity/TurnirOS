@@ -1,0 +1,90 @@
+1
+GETHAND
+4
+2 1 1 2 n
+2 1 1 2 n
+2 1 1 2 n
+2 1 1 2 n
+GETHAND
+2 1 1 2 n
+2 1 1 2 n
+2 1 1 2 n
+GETTable
+10 10 1 0
+2 1 1 2 n n
+GETHAND
+4
+2 1 1 2 n
+2 1 1 2 n
+2 1 1 2 n
+2 1 1 2 n
+GETHAND
+2 1 1 2 n
+2 1 1 2 n
+2 1 1 2 n
+GETTable
+10 10 3 1
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+GETHAND
+3
+2 1 1 2 n
+2 1 1 2 n
+2 1 1 2 n
+GETHAND
+2 1 1 2 n
+2 1 1 2 n
+GETTable
+9 9 5 3
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+GETHAND
+2
+2 1 1 2 n
+2 1 1 2 n
+GETHAND
+2 1 1 2 n
+GETTable
+6 6 7 5
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+GETHAND
+1
+2 1 1 2 n
+GETHAND
+2 1 1 2 n
+GETTable
+1 1 7 7
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+2 1 1 2 n n
+GETHAND

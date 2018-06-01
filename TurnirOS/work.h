@@ -74,3 +74,4 @@ void getTable(int pl);
 void getHand(int pl);
 void getInfo(int pl);
 void shuffleDeck(int pl);
+void writeHod(int pl);

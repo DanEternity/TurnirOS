@@ -52,7 +52,7 @@ extern HANDLE hChildStdout_R2, hChildStdout_W2;
 
 extern PROCESS_INFORMATION pi1, pi2;
 
-const int BUFSIZE = 64;
+const int BUFSIZE = 4096;
 
 extern map<string, int>COMMANDS;
 
@@ -101,4 +101,6 @@ void closeLog();
 extern int debugVal;
 extern ofstream Qlog;
 extern bool gameExit;
+extern bool gameStart;
+
 int qqq();

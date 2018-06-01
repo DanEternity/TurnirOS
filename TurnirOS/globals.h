@@ -86,7 +86,7 @@ extern vector<Card*> DataBase;
 
 extern ofstream *logFile;
 
-
+extern vector<char> message1, message2;
 
 void WriteToPipe(HANDLE read, HANDLE write, CHAR chBuf[], int size);
 void ReadFromPipe(HANDLE read, HANDLE write, CHAR chBuf[], DWORD size);

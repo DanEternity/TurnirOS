@@ -30,6 +30,44 @@ void make_tokens(std::stringstream &s, CHAR st[BUFSIZE], int size)
 	return;
 }
 
+void addToMessage(int player, string st)
+{
+	if(player == 0)
+		for (int i(0); i < st.size(); i++)
+			message1.push_back(st[i]);
+	else for (int i(0); i < st.size(); i++)
+			message2.push_back(st[i]);
+}
+
+void sendMessage(int player)
+{
+	if (player == 0)
+		writePlayerPipe(message1, player);
+	else writePlayerPipe(message2, player);
+}
+
+void writePlayerPipe(vector<char>mass, int player)
+{
+	CHAR chBuf[BUFSIZE];
+	DWORD size(0);
+	DWORD avail;
+
+	size = mass.size();
+	for (int i(0); i < size; i++)
+		chBuf[i] = mass[i];
+	
+	if (player == 0)
+	{
+		WriteToPipe(hChildStdin_R1, hChildStdin_W1, chBuf, size);
+		message1.clear();
+	}
+	else
+	{
+		WriteToPipe(hChildStdin_R2, hChildStdin_W2, chBuf, size);
+		message2.clear();
+	}
+}
+
 void readPlayerPipe()
 {
 	CHAR chBuf[BUFSIZE];
@@ -528,7 +566,7 @@ void loadDeck(string filename, int pl)
 
 void getTable(int pl)
 {
-	cout << health[pl] << ' ' << health[1 - pl] << endl;
+	addToMessage(pl, to_string(health[pl]) + ' ' + to_string(health[1 - pl]) + '\n');
 	int n = 0, m = 0;
 	for (int i(0); i < 7; i++)
 	{
@@ -537,50 +575,43 @@ void getTable(int pl)
 		if (tableCheck[1 - pl][i])
 			m++;
 	}
-	cout << n << ' ' << m << endl;
+	addToMessage(pl, to_string(n) + ' ' + to_string(m) + '\n');
 	for (int i(0); i<7; i++)
 		if (tableCheck[pl][i])
 		{
-			cout << i << ' ' << table[pl][i]->id << ' ' << table[pl][i]->scrManaCost << ' ';
-			cout << table[pl][i]->Atk << ' ' << table[pl][i]->Def << ' ';
-			if (table[pl][i]->isCanAttack == false)
-				cout << '-';
-			else
-				if (table[pl][i]->isRush || table[pl][i]->isStorm)
-					cout << '+';
-			cout << ' ' << table[pl][i]->spec << endl;
+			addToMessage(pl, to_string(i) + ' ' + to_string(table[pl][i]->id) + ' ' + to_string(table[pl][i]->scrManaCost)
+				+ ' ' + to_string(table[pl][i]->Atk) + ' ' + to_string(table[pl][i]->Def) + ' ' + ((!table[pl][i]->isCanAttack) ? '-' : ((table[pl][i]->isRush || table[pl][i]->isStorm) ? '+' : '-'))
+				+ ' ' + table[pl][i]->spec + '\n');
 		}
 	for (int i(0); i<7; i++)
 		if (tableCheck[1-pl][i])
 		{
-			cout << i << ' ' << table[1-pl][i]->id << ' ' << table[1-pl][i]->scrManaCost << ' ';
-			cout << table[1-pl][i]->Atk << ' ' << table[1-pl][i]->Def << ' ';
-			if (table[1-pl][i]->isCanAttack == false)
-				cout << '-';
-			else
-				if (table[1-pl][i]->isRush || table[1-pl][i]->isStorm)
-					cout << '+';
-			cout << ' ' << table[1-pl][i]->spec << endl;
+			addToMessage(1-pl, to_string(i) + ' ' + to_string(table[1-pl][i]->id) + ' ' + to_string(table[1-pl][i]->scrManaCost)
+				+ ' ' + to_string(table[1-pl][i]->Atk) + ' ' + to_string(table[1-pl][i]->Def) + ' ' + ((!table[1-pl][i]->isCanAttack) ? '-' : ((table[1-pl][i]->isRush || table[1-pl][i]->isStorm) ? '+' : '-'))
+				+ ' ' + table[1-pl][i]->spec + '\n');
 		}
+
+	sendMessage(pl);
 }
 
 void getHand(int pl)
 {
 	int n = hand[pl].size();
-	cout << n << endl;
+	addToMessage(pl, to_string(n) + '\n');
 	for (int i(0); i < n; i++)
 	{
-		cout << hand[pl][i]->id << ' ' << hand[pl][i]->manaCost << ' ' << hand[pl][i]->Atk << ' ' << hand[pl][i]->Def << ' ';
-		cout << hand[pl][i]->spec << endl;
+		addToMessage(pl, to_string(hand[pl][i]->id) + ' ' + to_string(hand[pl][i]->manaCost) + ' ' + to_string(hand[pl][i]->Atk)
+			+ ' ' + to_string(hand[pl][i]->Def) + ' ' + hand[pl][i]->spec + '\n');
 	}
+	sendMessage(pl);
 }
 
 void getInfo(int pl)
 {
-	cout << turn << endl;
-	cout << mana[pl] << ' ' << maxMana[pl] << endl;
-	cout << mana[1-pl] << ' ' << maxMana[1-pl] << endl;
-	cout << hand[1 - pl].size() << ' ' << deck[pl].size() << ' ' << deck[1 - pl].size() << endl;
+	addToMessage(pl, to_string(turn) + ' ' + to_string(mana[pl]) + ' ' + to_string(maxMana[pl]) + ' ' + to_string(mana[1 - pl])
+		+ ' ' + to_string(maxMana[1 - pl]) + ' ' + to_string(hand[1 - pl].size()) + ' ' + to_string(deck[pl].size()) + ' '
+		+ to_string(deck[1 - pl].size()) + '\n');
+	sendMessage(pl);
 }
 
 void shuffleDeck(int pl)

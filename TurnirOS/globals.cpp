@@ -45,7 +45,7 @@ HANDLE hChildStdout_R2, hChildStdout_W2;
 
 PROCESS_INFORMATION pi1, pi2;
 
-
+vector<char> message1, message2;
 
 map<string, int>COMMANDS = { { "-PLAY", 0 },{ "-ATTACK", 1 },{ "-END_TURN", 2 },{ "-GET_TABLE", 3}, {"-GET_INFO",4}, {"-GET_HAND",5}, {"-CONCEDE", 6} };
 //Функции для работы с дочерними процессами

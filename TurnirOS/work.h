@@ -63,3 +63,6 @@ void processPlayCard(int card, int pos, int trg);//Вызывается при разыгрывании к
 void destroyCard(int side, int pos);//Уничтожает карту
 void processTurnMain();//Функция с основным циклом
 void loadDeck(string filename, int pl);//Загружает колоду
+void getTable(int pl);
+void getHand(int pl);
+void getInfo(int pl);

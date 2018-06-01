@@ -519,3 +519,60 @@ void loadDeck(string filename, int pl)
 
 	ins.close();
 }
+
+void getTable(int pl)
+{
+	cout << health[pl] << ' ' << health[1 - pl] << endl;
+	int n = 0, m = 0;
+	for (int i(0); i < 7; i++)
+	{
+		if (tableCheck[pl][i])
+			n++;
+		if (tableCheck[1 - pl][i])
+			m++;
+	}
+	cout << n << ' ' << m << endl;
+	for (int i(0); i<7; i++)
+		if (tableCheck[pl][i])
+		{
+			cout << i << ' ' << table[pl][i]->id << ' ' << table[pl][i]->scrManaCost << ' ';
+			cout << table[pl][i]->Atk << ' ' << table[pl][i]->Def << ' ';
+			if (table[pl][i]->isCanAttack == false)
+				cout << '-';
+			else
+				if (table[pl][i]->isRush || table[pl][i]->isStorm)
+					cout << '+';
+			cout << ' ' << table[pl][i]->spec << endl;
+		}
+	for (int i(0); i<7; i++)
+		if (tableCheck[1-pl][i])
+		{
+			cout << i << ' ' << table[1-pl][i]->id << ' ' << table[1-pl][i]->scrManaCost << ' ';
+			cout << table[1-pl][i]->Atk << ' ' << table[1-pl][i]->Def << ' ';
+			if (table[1-pl][i]->isCanAttack == false)
+				cout << '-';
+			else
+				if (table[1-pl][i]->isRush || table[1-pl][i]->isStorm)
+					cout << '+';
+			cout << ' ' << table[1-pl][i]->spec << endl;
+		}
+}
+
+void getHand(int pl)
+{
+	int n = hand[pl].size();
+	cout << n << endl;
+	for (int i(0); i < n; i++)
+	{
+		cout << hand[pl][i]->id << ' ' << hand[pl][i]->manaCost << ' ' << hand[pl][i]->Atk << ' ' << hand[pl][i]->Def << ' ';
+		cout << hand[pl][i]->spec << endl;
+	}
+}
+
+void getInfo(int pl)
+{
+	cout << turn << endl;
+	cout << mana[pl] << ' ' << maxMana[pl] << endl;
+	cout << mana[1-pl] << ' ' << maxMana[1-pl] << endl;
+	cout << hand[1 - pl].size() << ' ' << deck[pl].size() << ' ' << deck[1 - pl].size() << endl;
+}

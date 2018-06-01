@@ -92,6 +92,7 @@ void WriteToPipe(HANDLE read, HANDLE write, CHAR chBuf[], int size);
 void ReadFromPipe(HANDLE read, HANDLE write, CHAR chBuf[], DWORD size);
 
 BOOL RunProcess(const char *lpApplicationName, HANDLE pipeRead, HANDLE pipeWrite, DWORD dwWaitMilliseconds, PROCESS_INFORMATION &PI, STARTUPINFOA &SI);
+void createProcesses(string name1, string name2);
 
 void createLog();
 void writeToLog(string st);

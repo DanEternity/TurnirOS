@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <map>
 
 /*
@@ -41,19 +42,8 @@ void closeLog();
 
 using namespace std; 
 
-std::stringstream que1, que2;
-
-HANDLE hChildStdin_R1, hChildStdin_W1;
-HANDLE hChildStdout_R1, hChildStdout_W1;
-
-HANDLE hChildStdin_R2, hChildStdin_W2;
-HANDLE hChildStdout_R2, hChildStdout_W2;
-
-PROCESS_INFORMATION pi1, pi2;
-
-const int BUFSIZE = 64;
-
-map<string, int>COMMANDS = { {"play", 0}; {"attack", 1}; {"endturn", 2} };
+extern std::stringstream que1, que2;
+extern map<string, int>COMMANDS;
 
 class Card;
 
@@ -102,6 +92,7 @@ void WriteToPipe(HANDLE read, HANDLE write, CHAR chBuf[], int size);
 void ReadFromPipe(HANDLE read, HANDLE write, CHAR chBuf[], DWORD size);
 
 BOOL RunProcess(const char *lpApplicationName, HANDLE pipeRead, HANDLE pipeWrite, DWORD dwWaitMilliseconds, PROCESS_INFORMATION &PI, STARTUPINFOA &SI);
+BOOL createProcesses(std::string st1, std::string st2);
 
 void createLog();
 void writeToLog(string st);

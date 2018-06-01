@@ -27,6 +27,26 @@ void make_tokens(std::stringstream &s, CHAR st[BUFSIZE], int size)
 	return;
 }
 
+void writePlayerPipe(vector<char>mass)
+{
+	CHAR chBuf[BUFSIZE];
+	DWORD size(0);
+	DWORD avail;
+
+	size = mass.size();
+	for (int i(0); i < size; i++)
+		chBuf[i] = mass[i];
+	
+	if (player == 0)
+	{
+		WriteToPipe(hChildStdin_R1, hChildStdin_W1, chBuf, size);
+	}
+	else
+	{
+		WriteToPipe(hChildStdin_R2, hChildStdin_W2, chBuf, size);
+	}
+}
+
 void readPlayerPipe()
 {
 	CHAR chBuf[BUFSIZE];

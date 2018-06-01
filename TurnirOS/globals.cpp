@@ -28,14 +28,15 @@ int target;
 
 bool refresh = false;
 vector<Card*> DataBase;
+int debugVal = 0;
+ofstream Qlog("log.txt");
+bool gameExit = false;
 
 int qqq()
 {
 	return 0;
 }
-
 std::stringstream que1, que2;
-
 HANDLE hChildStdin_R1, hChildStdin_W1;
 HANDLE hChildStdout_R1, hChildStdout_W1;
 
@@ -44,7 +45,9 @@ HANDLE hChildStdout_R2, hChildStdout_W2;
 
 PROCESS_INFORMATION pi1, pi2;
 
-map<string, int>COMMANDS = { { "play", 0 },{ "attack", 1 },{ "endturn", 2 } };
+
+
+map<string, int>COMMANDS = { { "-PLAY", 0 },{ "-ATTACK", 1 },{ "-END_TURN", 2 },{ "-GET_TABLE", 3}, {"-GET_INFO",4}, {"-GET_HAND",5}, {"-CONCEDE", 6} };
 //Функции для работы с дочерними процессами
 
 void WriteToPipe(HANDLE read, HANDLE write, CHAR chBuf[], int size)
@@ -100,36 +103,6 @@ BOOL RunProcess(const char *lpApplicationName, HANDLE pipeRead, HANDLE pipeWrite
 	SI = si;
 
 	return TRUE;
-}
-
-BOOL createProcesses(std::string st1, std::string st2)
-{
-	std::string pname1 = st1;
-	std::string pname2 = st2;
-	STARTUPINFOA si1, si2;
-
-	SECURITY_ATTRIBUTES sa;
-	ZeroMemory(&sa, sizeof(SECURITY_ATTRIBUTES));
-	sa.nLength = sizeof(SECURITY_ATTRIBUTES);
-	sa.bInheritHandle = true;
-	sa.lpSecurityDescriptor = NULL;
-	if (!CreatePipe(&hChildStdin_R1, &hChildStdin_W1, &sa, 0))
-		std::cout << "CreatePipe Error" << std::endl;
-
-	if (!CreatePipe(&hChildStdout_R1, &hChildStdout_W1, &sa, 0))
-		std::cout << "CreatePipe Error" << std::endl;
-
-	if (!CreatePipe(&hChildStdin_R2, &hChildStdin_W2, &sa, 0))
-		std::cout << "CreatePipe Error" << std::endl;
-
-	if (!CreatePipe(&hChildStdout_R2, &hChildStdout_W2, &sa, 0))
-		std::cout << "CreatePipe Error" << std::endl;
-
-
-	RunProcess(pname1.c_str(), hChildStdin_R1, hChildStdout_W1, INFINITE, pi1, si1);
-	RunProcess(pname2.c_str(), hChildStdin_R2, hChildStdout_W2, INFINITE, pi2, si2);
-
-	return true;
 }
 
 //Log-функции

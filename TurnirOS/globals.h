@@ -4,8 +4,8 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <map>
+#include <sstream>
 
 /*
 void WriteToPipe(HANDLE read, HANDLE write, CHAR chBuf[], int size);
@@ -43,6 +43,17 @@ void closeLog();
 using namespace std; 
 
 extern std::stringstream que1, que2;
+
+extern HANDLE hChildStdin_R1, hChildStdin_W1;
+extern HANDLE hChildStdout_R1, hChildStdout_W1;
+
+extern HANDLE hChildStdin_R2, hChildStdin_W2;
+extern HANDLE hChildStdout_R2, hChildStdout_W2;
+
+extern PROCESS_INFORMATION pi1, pi2;
+
+const int BUFSIZE = 64;
+
 extern map<string, int>COMMANDS;
 
 class Card;
@@ -75,27 +86,18 @@ extern vector<Card*> DataBase;
 
 extern ofstream *logFile;
 
-//Трубы для первого дочернего процесса
-extern HANDLE hChildStdin_R1, hChildStdin_W1;//Труба для потока ввода
-extern HANDLE hChildStdout_R1, hChildStdout_W1;//Труба для потока вывода
-//Возможно стоит добавить трубы для потока ошибок.
-//Или же объединить его с потоком вывода
 
-//Трубы для второго дочернего процесса
-extern HANDLE hChildStdin_R2, hChildStdin_W2;
-extern HANDLE hChildStdout_R2, hChildStdout_W2;
-
-//Размер буфера для передачи/получения информации от дочерних процессов
-const int BUFSIZE = 64;
 
 void WriteToPipe(HANDLE read, HANDLE write, CHAR chBuf[], int size);
 void ReadFromPipe(HANDLE read, HANDLE write, CHAR chBuf[], DWORD size);
 
 BOOL RunProcess(const char *lpApplicationName, HANDLE pipeRead, HANDLE pipeWrite, DWORD dwWaitMilliseconds, PROCESS_INFORMATION &PI, STARTUPINFOA &SI);
-BOOL createProcesses(std::string st1, std::string st2);
 
 void createLog();
 void writeToLog(string st);
 void closeLog();
 
+extern int debugVal;
+extern ofstream Qlog;
+extern bool gameExit;
 int qqq();

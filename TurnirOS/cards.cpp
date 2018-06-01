@@ -6,7 +6,40 @@ Card::Card()
 
 Card::Card(Card * q)
 {
-	memcpy(this, q, sizeof(Card));
+	//memcpy(this, q, sizeof(Card));
+	//effPTR = NULL;
+	id = q->id;
+	name = q->name;
+	scrManaCost = q->scrManaCost;
+	scrAtk = q->scrAtk;
+	scrDef = q->scrDef;
+	
+	manaCost = q->manaCost;
+	Atk = q->Atk;
+	Def = q->Def;
+
+	maxAtk = q->maxAtk;
+	maxDef = q->maxDef;
+
+	effect = q->effect;
+	effPTR = q->effPTR;
+
+	spec = q->spec;
+	isSpell = q->isSpell;
+	isStorm = q->isStorm;
+	isRush = q->isRush;
+	isCurse = q->isCurse;
+	isTaunt = q->isTaunt;
+	isTargetable = q->isTargetable;
+	isCanAttack = q->isCanAttack;
+	isLastWord = q->isLastWord;
+	isFanfare = q->isFanfare;
+	isClash = q->isClash;
+
+	requredSp = q->requredSp;
+	atr1 = q->atr1;
+	atr2 = q->atr2;
+	atr3 = q->atr3;
 }
 
 Card::~Card()
@@ -63,6 +96,18 @@ void fManaUp(Card * scr)
 	// Как видно не увеличивает максимальный показатель маны
 }
 
+void fFreeze(Card * scr)
+{
+	table[1 - player][selected]->isCanAttack = false;
+}
+
+void fLWCreateCreature(Card * scr)
+{
+	//
+}
+
+
+
 void AddCard(string name, int mana, int atk, int def, string spec)
 {
 	DataBase.push_back(new Card());
@@ -74,6 +119,7 @@ void AddCard(string name, int mana, int atk, int def, string spec)
 	t->scrDef = def;
 	t->spec = spec;
 	t->effPTR = fNone;
+	t->id = q;
 
 	t->isSpell = false;
 	t->isStorm = false;;
@@ -113,5 +159,19 @@ void LoadCards()
 	t = DataBase[DataBase.size() - 1];
 	t->atr1 = 1;
 	t->effPTR = fManaUp;
+
+	AddCard("ID 1", 1, 0, 2, "p");
+
+	AddCard("ID 2", 1, 1, 2, "n");
+
+	AddCard("ID 3", 1, 1, 1, "bt");
+	t = DataBase[DataBase.size() - 1];
+	t->effPTR = fFreeze;
+
+	AddCard("ID 4", 1, 1, 1, "d");
+	t = DataBase[DataBase.size() - 1];
+//	t->effPTR = f; // Not finished;
+
+
 
 }

@@ -147,7 +147,7 @@ void processAttack(int scr, int trg)
 void processDrawACard(int pl)
 {
 	// Log?
-	
+	Qlog << pl << " DRAWCARD " << endl;
 	//
 
 	if (deck[pl].size() == 0)
@@ -247,8 +247,10 @@ void processTurnMain()
 
 	for (int i(0); i < 7; i++)
 		if (tableCheck[player][i])
+		{
 			table[player][i]->isStorm = true;
-
+			table[player][i]->isRush = false;
+		}
 	// Actually start of the turn
 
 	while (1)
@@ -390,12 +392,13 @@ void processTurnMain()
 			break;
 		case 2: // ATTACK
 		{
-			if (tableCheck[player][scr] && table[player][scr]->isStorm)
+			if (tableCheck[player][scr] && (table[player][scr]->isStorm || table[player][scr]->isRush))
 			{
 				if (dst != -1 && tableCheck[1 - player][dst])
 				{
 					// Здесь всё сложнее...
 					table[player][scr]->isStorm = false;
+					table[player][scr]->isRush = false;
 					// Проверка на удар по провокациям...
 
 					int tt = getLeftTaunt(player); // res < 0 если таунтов вообще нет
@@ -412,9 +415,10 @@ void processTurnMain()
 				}
 				else
 				{
-					if (dst == -1)
+					if (dst == -1 && (table[player][scr]->isRush == false || table[player][scr]->isStorm == true))
 					{
 						table[player][scr]->isStorm = false;
+						table[player][scr]->isRush = false;
 						int tt = getLeftTaunt(player); // res < 0 если таунтов вообще нет
 						if (tt < 0)
 						{
@@ -481,6 +485,7 @@ void processTurnMain()
 		if (health[0] <= 0)
 		{
 			Qlog << "PLAYER 1 DEFEATED" << endl;
+			Qlog << "PLAYER 2 WIN" << endl;
 			gameExit = true;
 			break;
 		}
@@ -488,6 +493,7 @@ void processTurnMain()
 		if (health[1] <= 0)
 		{
 			Qlog << "PLAYER 2 DEFEATED" << endl;
+			Qlog << "PLAYER 1 WIN" << endl;
 			gameExit = true;
 			break;
 		}
@@ -575,4 +581,19 @@ void getInfo(int pl)
 	cout << mana[pl] << ' ' << maxMana[pl] << endl;
 	cout << mana[1-pl] << ' ' << maxMana[1-pl] << endl;
 	cout << hand[1 - pl].size() << ' ' << deck[pl].size() << ' ' << deck[1 - pl].size() << endl;
+}
+
+void shuffleDeck(int pl)
+{
+	for (int i(0); i < deck[pl].size(); i++)
+	{
+		int idx = rand() % deck[pl].size();
+		swap(deck[pl][i], deck[pl][idx]);
+	}
+	Qlog << pl << " SHUFFLE ";
+	for (int i(0); i < deck[pl].size(); i++)
+	{
+		Qlog << deck[pl][i]->id << ' ';
+	}
+	Qlog << endl;
 }

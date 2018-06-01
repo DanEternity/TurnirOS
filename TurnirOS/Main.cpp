@@ -7,11 +7,11 @@
 #include<work.h>
 #include "Main.h"
 #include "ProcessWork.h"
-
+#include <ctime>
 using namespace std;
 
-const bool debugMode = true;
-
+const bool debugMode = false;
+const bool mainMode = true;
 void initAll()
 {
 	const bool debugMode = true;
@@ -47,6 +47,8 @@ void createPlayers()
 
 int main()
 {
+	srand(time(NULL));
+
 	createLog();//Создадим лог-файл
 	initAll();//Инициализируем всё
 	createPlayers();
@@ -66,8 +68,55 @@ int main()
 		processDrawACard(1);
 		processDrawACard(1);
 	}
+	string p1exe, p2exe;
+	string d1, d2;
+	if (mainMode)
+	{
+		ifstream qcin("init.cfg");
+		qcin >> d1 >> d2 >> p1exe >> p2exe;
+		createProcesses(p1exe, p2exe);
+		loadDeck(d1, 0);
+		loadDeck(d2, 1);
+		shuffleDeck(0);
+		shuffleDeck(1);
+		processDrawACard(0);
+		processDrawACard(0);
+		processDrawACard(0);
+		processDrawACard(1);
+		processDrawACard(1);
+		processDrawACard(1);
+		processDrawACard(1);
+		// send data to players
+		//
+		getHand(0);
+		getHand(1);
+		// get data from players
+		//
+		// recieveMessege(0);
+		// recieveMessege(1);
+		// shuffle decks
+
+		shuffleDeck(0);
+		shuffleDeck(1);
+
+	}
 
 	cout << "READY" << endl;
+
+	if (mainMode)
+	{
+		player = 0;
+		turn = 1;
+		while (!gameExit)
+		{
+			Qlog << "TURN " << turn << " PLAYER: " << player << endl;
+			processTurnMain();
+			turn++;
+			 
+		}
+		cout << "GAME OVER ON TURN " << turn << endl;
+	}
+
 
 	if (debugMode)
 	{

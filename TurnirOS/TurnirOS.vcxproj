@@ -129,6 +129,9 @@
     <Text Include="log.txt" />
     <Text Include="test.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="init.cfg" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

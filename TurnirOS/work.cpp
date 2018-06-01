@@ -2,7 +2,6 @@
 #include <Windows.h>
 #include "globals.h"
 
-
 int getTableCardCount(int pl)
 {
 	int c = 0;

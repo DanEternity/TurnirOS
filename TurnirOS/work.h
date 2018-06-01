@@ -55,6 +55,12 @@ void loadDeck(string filename, int pl);
 	pl - индекс игрока
 */
 
+void make_tokens(std::stringstream &s, CHAR st[BUFSIZE], int size);
+void addToMessage(int player, string st);
+void sendMessage(int player);
+void writePlayerPipe(vector<char>mass, int player);
+void readPlayerPipe();
+int getArgumentCount();
 int getTableCardCount(int pl);//Получить количество существ на столе у данного игрока
 void getAction(int &type, int &scr, int &dst, int &param, int &code);//Считать запрос игрока
 void processAttack(int scr, int trg);//Вызывается при получении команды на атаку

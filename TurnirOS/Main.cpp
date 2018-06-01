@@ -2,11 +2,9 @@
 #include<cmath>
 #include<algorithm>
 #include<vector>
-#include<globals.h>
-#include<cards.h>
-#include<work.h>
-#include "Main.h"
-#include "ProcessWork.h"
+#include"globals.h"
+#include"cards.h"
+#include"work.h"
 
 using namespace std;
 

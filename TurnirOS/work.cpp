@@ -39,6 +39,8 @@ void addToMessage(int player, string st)
 			message2.push_back(st[i]);
 }
 
+void writePlayerPipe(vector<char>mass, int player);
+
 void sendMessage(int player)
 {
 	if (player == 0)

@@ -5,8 +5,6 @@
 #include<globals.h>
 #include<cards.h>
 #include<work.h>
-#include "Main.h"
-#include "ProcessWork.h"
 #include <ctime>
 using namespace std;
 

@@ -68,7 +68,7 @@ extern vector<Card*> hand[2];
 extern int health[2];
 extern int mana[2];
 extern int maxMana[2];
-
+extern int fatique[2];
 // info game
 extern int turn; // номер хода
 extern int player; // кто из игроков ходит
@@ -100,6 +100,7 @@ void closeLog();
 
 extern int debugVal;
 extern ofstream Qlog;
+extern ofstream mlog;
 extern bool gameExit;
 extern bool gameStart;
 

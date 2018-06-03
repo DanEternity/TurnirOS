@@ -35,8 +35,9 @@ Card::Card(Card * q)
 	isLastWord = q->isLastWord;
 	isFanfare = q->isFanfare;
 	isClash = q->isClash;
-
+	isDisabled = q->isDisabled;
 	requredSp = q->requredSp;
+
 	atr1 = q->atr1;
 	atr2 = q->atr2;
 	atr3 = q->atr3;
@@ -87,23 +88,101 @@ void fDamage(Card * scr)
 {
 	// atr1 = dmg
 	table[1-player][selected]->Def -= scr->atr1;
+	refresh = true;
+	Qlog << player << " EFFECT " << "DAMAGE " << 1 - player << ' ' << selected << "  dmg " << scr->atr1 << endl;
 }
 
 void fManaUp(Card * scr)
 {
 	// Нужно создать событие, но у нас нет событий...
 	mana[player] += scr->atr1; // Она может превысить значение 10.
+	Qlog << player << " EFFECT " << "MANA+= " << scr->atr1 << endl;
 	// Как видно не увеличивает максимальный показатель маны
 }
 
 void fFreeze(Card * scr)
 {
-	table[1 - player][selected]->isCanAttack = false;
+	//table[1 - player][selected]->isCanAttack = false;
+	table[1 - player][selected]->isDisabled = true;
+	Qlog << player << " EFFECT " << "FREEZE " << 1 - player << ' ' << selected << endl;
 }
 
 void fLWCreateCreature(Card * scr)
 {
 	//
+
+}
+
+void fDrawCards(Card * scr)
+{
+	// atr1 = card count
+	// atr2 = 0 for player, 1 for enemy
+
+	Qlog << player << " EFFECT " << "DRAW_A_CARD " << scr->atr1 << endl;
+
+	int pl;
+	if (scr->atr2 == 0)
+	{
+		pl = player;
+	}
+	else
+		pl = 1 - player;
+	for (int i(0); i < scr->atr1; i++)
+	{
+		// Log?
+		Qlog << pl << " DRAWCARD ";// << //endl;
+
+									//
+
+		if (deck[pl].size() == 0)
+		{
+			// Draw fatique (1.. 2.. 3.. 4.. и тд урона)
+
+			fatique[pl]++;
+			health[pl] -= fatique[pl];
+			Qlog << "-1 FATIQUE " << fatique[pl] << endl;
+		}
+		else
+		{
+			if (hand[pl].size() == 9)
+			{
+				// log
+				// discard card
+				Qlog << deck[pl][0]->id << ' ' << deck[pl][0]->manaCost << ' ' << deck[pl][0]->Atk << ' ' << deck[pl][0]->Def << endl;
+				delete deck[pl][0];
+
+			}
+			else
+			{
+				Qlog << deck[pl][0]->id << ' ' << deck[pl][0]->manaCost << ' ' << deck[pl][0]->Atk << ' ' << deck[pl][0]->Def << endl;
+				hand[pl].push_back(deck[pl][0]);
+			}
+			deck[pl].erase(deck[pl].begin() + 0);
+
+		}
+	}
+
+	
+}
+
+void fDamageAOE(Card * scr)
+{
+	// atr1 = dmg
+	for (int i(0); i < 7; i++)
+	{
+		if (tableCheck[player][i] && table[player][i] != scr)
+		{
+			table[player][i]->Def -= scr->atr1;
+			refresh = true;
+			Qlog << player << " EFFECT " << "DAMAGE " << player << ' ' << i << "  dmg " << scr->atr1 << endl;
+		}
+		if (tableCheck[1-player][i])
+		{
+			table[1-player][i]->Def -= scr->atr1;
+			refresh = true;
+			Qlog << player << " EFFECT " << "DAMAGE " << 1-player << ' ' << i << "  dmg " << scr->atr1 << endl;
+		}
+	}
 }
 
 
@@ -122,13 +201,14 @@ void AddCard(string name, int mana, int atk, int def, string spec)
 	t->id = q;
 
 	t->isSpell = false;
-	t->isStorm = false;;
+	t->isStorm = false;
 	t->isRush = false;
 	t->isCurse = false;
 	t->isTaunt = false;
 	t->isTargetable = false;
 	t->isCanAttack = false;
 	t->isLastWord = false;
+	t->isDisabled = false;
 
 	for (int i(0); i < spec.size(); i++)
 	{
@@ -172,6 +252,27 @@ void LoadCards()
 	t = DataBase[DataBase.size() - 1];
 //	t->effPTR = f; // Not finished;
 
+	// testing
 
+	AddCard("ID 5", 3, 2, 2, "s");
 
+	AddCard("ID 6", 4, 3, 4, "p");
+
+	AddCard("ID 7", 5, 6, 5, "n");
+
+	AddCard("ID 8", 4, 2, 1, "b");
+	t = DataBase[DataBase.size() - 1];
+	t->effPTR = fDrawCards;
+	t->atr1 = 2;
+	t->atr2 = 0;
+
+	AddCard("ID 9", 2, 0, 0, "at");
+	t = DataBase[DataBase.size() - 1];
+	t->effPTR = fDamage;
+	t->atr1 = 3;
+
+	AddCard("ID 10", 7, 4, 4, "bp");
+	t = DataBase[DataBase.size() - 1];
+	t->effPTR = fDamageAOE;
+	t->atr1 = 2;
 }

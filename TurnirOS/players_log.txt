@@ -1,0 +1,852 @@
+Get from 1: 
+0 0 1 -GET_HAND
+
+
+Get from 2: 
+0 0 1 1 -GET_HAND
+
+
+Get from 1: 
+-PLAY 1 0
+
+-GET_HAND
+
+
+Get from 1: 
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 2 0
+
+-GET_HAND
+
+
+Get from 2: 
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 1: 
+-GET_HAND
+
+
+Get from 1: 
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 3 0
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 3 0
+
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 1: 
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 3 0
+
+-GET_HAND
+
+
+Get from 2: 
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 1 0
+
+-GET_HAND
+
+
+Get from 1: 
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 2: 
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 1: 
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 2: 
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 1 0
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 1 0
+
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 1: 
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-ATTACK 2 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-ATTACK 3 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-ATTACK 3 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 1 0
+
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-ATTACK 3 -1
+
+-ATTACK 4 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-ATTACK 3 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 3 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-ATTACK 3 -1
+
+-ATTACK 4 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 2: 
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-ATTACK 3 -1
+
+-ATTACK 4 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 1: 
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 2: 
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 1: 
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 2: 
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 1: 
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 2: 
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 1: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 1: 
+-GET_TABLE
+
+
+Get from 1: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-END_TURN
+
+-GET_HAND
+
+
+Get from 2: 
+-PLAY 0 0
+
+-GET_HAND
+
+
+Get from 2: 
+-GET_TABLE
+
+
+Get from 2: 
+-ATTACK 0 -1
+
+-ATTACK 1 -1
+
+-ATTACK 2 -1
+
+-ATTACK 3 -1
+
+-END_TURN
+
+-GET_HAND
+
+

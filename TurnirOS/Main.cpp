@@ -70,8 +70,8 @@ int main()
 	string d1, d2;
 	if (mainMode)
 	{
-		health[0] = 10;
-		health[1] = 10;
+		health[0] = 30;
+		health[1] = 30;
 		ifstream qcin("init.cfg");
 		qcin >> d1 >> d2 >> p1exe >> p2exe;
 		qcin.close();
@@ -157,6 +157,7 @@ int main()
 			 
 		}
 		Qlog.close();
+		mlog.close();
 		cout << "GAME OVER ON TURN " << turn << endl;
 	}
 

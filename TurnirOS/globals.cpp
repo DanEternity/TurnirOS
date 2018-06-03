@@ -16,6 +16,8 @@ int health[2];
 int mana[2];
 int maxMana[2];
 
+int fatique[2] = { 0, 0 };
+
 // info game
 int turn; // номер хода
 int player; // кто из игроков ходит
@@ -30,6 +32,7 @@ bool refresh = false;
 vector<Card*> DataBase;
 int debugVal = 0;
 ofstream Qlog("log.txt");
+ofstream mlog("players_log.txt");
 bool gameExit = false;
 bool gameStart = true;
 

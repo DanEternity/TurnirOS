@@ -46,6 +46,9 @@
     <Text Include="log.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
+    <Text Include="players_log.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="init.cfg">

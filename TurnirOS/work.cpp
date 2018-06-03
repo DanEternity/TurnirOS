@@ -84,7 +84,8 @@ void readPlayerPipe()
 		{
 			ZeroMemory(&chBuf, sizeof(chBuf));//Считаем содержимое канала
 			ReadFromPipe(hChildStdout_R1, hChildStdout_W1, chBuf, avail);
-			std::cout << "Get from 1: " << chBuf << std::endl;
+			std::cout << "Get from 1: " << endl << chBuf << std::endl;
+			mlog << "Get from 1: " << endl << chBuf << std::endl;
 			make_tokens(que1, chBuf, avail);
 		}
 	}
@@ -95,7 +96,8 @@ void readPlayerPipe()
 		{
 			ZeroMemory(&chBuf, sizeof(chBuf));
 			ReadFromPipe(hChildStdout_R2, hChildStdout_W2, chBuf, avail);
-			std::cout << "Get from 2: " << chBuf << std::endl;
+			std::cout << "Get from 2: " << endl << chBuf << std::endl;
+			mlog << "Get from 2: " << endl << chBuf << std::endl;
 			make_tokens(que2, chBuf, avail);
 		}
 	}
@@ -260,7 +262,7 @@ void processAttack(int scr, int trg)
 
 	/* LOG? */
 	Qlog << player << " ATTACK " << scr << ' ' << trg << "   " << table[player][selected]->Atk << " dmg" << endl;
-	Qlog << 1-player << " ATTACK " << trg << ' ' << scr << "   " << table[1-player][selected]->Atk << " dmg" << endl;
+	Qlog << 1-player << " ATTACK " << trg << ' ' << scr << "   " << table[1-player][target]->Atk << " dmg" << endl;
 	/* ADD EFFECT IF CURSE */
 
 	// tmp check death
@@ -280,13 +282,17 @@ void processAttack(int scr, int trg)
 void processDrawACard(int pl)
 {
 	// Log?
-	Qlog << pl << " DRAWCARD " << endl;
+	Qlog << pl << " DRAWCARD ";// << //endl;
+
 	//
 
 	if (deck[pl].size() == 0)
 	{
 		// Draw fatique (1.. 2.. 3.. 4.. и тд урона)
-
+		
+		fatique[pl]++;
+		health[pl] -= fatique[pl];
+		Qlog << "-1 FATIQUE " << fatique[pl] << endl;
 	}
 	else
 	{
@@ -294,10 +300,15 @@ void processDrawACard(int pl)
 		{
 			// log
 			// discard card
-			delete hand[pl][0];
+			Qlog << "DISCARD " << deck[pl][0]->id << ' ' << deck[pl][0]->manaCost << ' ' << deck[pl][0]->Atk << ' ' << deck[pl][0]->Def << endl;
+			delete deck[pl][0];
+			
 		}
 		else
+		{
+			Qlog << deck[pl][0]->id << ' ' << deck[pl][0]->manaCost << ' ' << deck[pl][0]->Atk << ' ' << deck[pl][0]->Def << endl;
 			hand[pl].push_back(deck[pl][0]);
+		}
 		deck[pl].erase(deck[pl].begin() + 0);
 		
 	}
@@ -331,6 +342,11 @@ void processPlayCard(int card, int pos, int trg)
 		// Вначале хода всем картам на столе нужно устновить флаг isStorm.
 		// Если у карты isCanAttack = false то isStorm устанавливать не нужно
 		tableCheck[player][selected] = true;
+		// Если у карты есть эффект, активируем его + Log
+		if (table[player][selected]->isFanfare)
+		{
+			table[player][selected]->effPTR(table[player][selected]);
+		}
 	}
 }
 
@@ -381,8 +397,16 @@ void processTurnMain()
 	for (int i(0); i < 7; i++)
 		if (tableCheck[player][i])
 		{
-			table[player][i]->isStorm = true;
-			table[player][i]->isRush = false;
+			if (!table[player][i]->isDisabled)
+			{
+				table[player][i]->isStorm = true;
+				table[player][i]->isRush = false;
+			}
+			else
+			{
+				table[player][i]->isStorm = false;
+				table[player][i]->isRush = false;
+			}
 		}
 	// Actually start of the turn
 
@@ -496,6 +520,7 @@ void processTurnMain()
 								// сдвигаем вправо
 								// ЭТО СКОРЕЕ ВСЕГО НУЖНО ЛОГИРОВАТЬ
 								// ПОТОМУ ЧТО ВИЗУАЛЬНО ТО ИЗМЕНЕНИЕ ПРОИЗХОДИТ НА СТОЛЕ
+								Qlog << player << " SHIFT " << scr << " RIGHT " << endl;
 								for (int i(emp); i >= dst + 1; i--)
 									table[player][i] = table[player][i - 1];
 							}
@@ -504,6 +529,7 @@ void processTurnMain()
 								// сдвигаем влево
 								// ЭТО СКОРЕЕ ВСЕГО НУЖНО ЛОГИРОВАТЬ
 								// ПОТОМУ ЧТО ВИЗУАЛЬНО ТО ИЗМЕНЕНИЕ ПРОИЗХОДИТ НА СТОЛЕ
+								Qlog << player << " SHIFT " << scr << " LEFT " << endl;
 								for (int i(emp); i < dst - 1; i++)
 									table[player][i] = table[player][i + 1];
 
@@ -585,7 +611,7 @@ void processTurnMain()
 		// Можно и флаг возвести
 		// но как-то лень
 		
-		for (int i(0); i < 6; i++) // Этот цикл обязателен я знаю пример, когда без него останется существо с -1 хп и не умрёт
+		for (int i(0); i < 7; i++) // Этот цикл обязателен я знаю пример, когда без него останется существо с -1 хп и не умрёт
 		{
 			// По крайней мере мы будем уверены, что на столе нет карт с -1 и менее хп)
 			// Но здесь вообще кроется некоторая проблема данной архитектуры.
@@ -605,7 +631,7 @@ void processTurnMain()
 		while (refresh)
 		{
 			refresh = false;
-			for (int i(0); i < 6; i++) 
+			for (int i(0); i < 7; i++) 
 			{
 				if (tableCheck[player][i] && table[player][i]->Def <= 0)
 					destroyCard(player, i);
@@ -636,6 +662,12 @@ void processTurnMain()
 	}
 
 	// End of the turn
+
+	for (int i(0); i < 7; i++)
+	{
+		if (tableCheck[player][i])
+			table[player][i]->isDisabled = false;
+	}
 
 	// Activating end turn abilities
 	// if they exist...

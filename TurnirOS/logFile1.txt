@@ -1,90 +1,284 @@
 1
 GETHAND
 4
+5 3 2 2 s
+1 1 0 2 p
+7 5 6 5 n
+6 4 3 4 p
+GETHAND
+5 3 2 2 s
+7 5 6 5 n
+6 4 3 4 p
+GETTable
+30 30 1 0
+1 1 0 2 p p
+GETHAND
+4
+5 3 2 2 s
+7 5 6 5 n
+6 4 3 4 p
+10 7 4 4 bp
+GETHAND
+5 3 2 2 s
+7 5 6 5 n
+6 4 3 4 p
+10 7 4 4 bp
+GETTable
+30 30 1 1
+1 1 0 2 p p
+2 1 1 2 n n
+GETHAND
+5
+5 3 2 2 s
+7 5 6 5 n
+6 4 3 4 p
+10 7 4 4 bp
+5 3 2 2 s
+GETHAND
+7 5 6 5 n
+6 4 3 4 p
+10 7 4 4 bp
+5 3 2 2 s
+GETTable
+30 30 2 3
+5 3 2 2 s s
+1 1 0 1 p p
+1 1 0 2 p p
+1 1 0 2 p p
+2 1 1 2 n n
+GETHAND
+5
+7 5 6 5 n
+6 4 3 4 p
+10 7 4 4 bp
+5 3 2 2 s
+1 1 0 2 p
+GETHAND
+7 5 6 5 n
+10 7 4 4 bp
+5 3 2 2 s
+1 1 0 2 p
+GETTable
+30 30 2 3
+6 4 3 4 p p
+5 3 2 2 s s
+2 1 1 2 n n
+1 1 0 2 p p
+2 1 1 2 n n
+GETHAND
+5
+7 5 6 5 n
+10 7 4 4 bp
+5 3 2 2 s
+1 1 0 2 p
+8 4 2 1 b
+GETHAND
+10 7 4 4 bp
+5 3 2 2 s
+1 1 0 2 p
+8 4 2 1 b
+GETTable
+30 30 3 1
+7 5 6 5 n n
+6 4 3 2 p p
+5 3 2 2 s s
+6 4 3 4 p p
+GETHAND
+5
+10 7 4 4 bp
+5 3 2 2 s
+1 1 0 2 p
+8 4 2 1 b
+1 1 0 2 p
+GETHAND
+10 7 4 4 bp
+1 1 0 2 p
+8 4 2 1 b
+1 1 0 2 p
+GETTable
+30 30 3 1
+1 1 0 2 p p
+5 3 2 2 s s
+7 5 6 5 n n
+7 5 6 5 n n
+GETHAND
+4
+10 7 4 4 bp
+8 4 2 1 b
+1 1 0 2 p
+7 5 6 5 n
+GETHAND
+8 4 2 1 b
+1 1 0 2 p
+7 5 6 5 n
+GETTable
+30 22 2 1
+10 7 4 4 bp bp
+7 5 6 3 n n
+7 5 6 3 n n
+GETHAND
+4
+8 4 2 1 b
+1 1 0 2 p
+7 5 6 5 n
+2 1 1 2 n
+GETHAND
+1 1 0 2 p
+7 5 6 5 n
 2 1 1 2 n
 2 1 1 2 n
+10 7 4 4 bp
+GETTable
+30 16 3 2
+1 1 0 2 p p
+8 4 2 1 b b
+7 5 6 3 n n
+8 4 2 1 b b
+2 1 1 2 n n
+GETHAND
+5
+7 5 6 5 n
 2 1 1 2 n
 2 1 1 2 n
+10 7 4 4 bp
+1 1 0 2 p
 GETHAND
 2 1 1 2 n
 2 1 1 2 n
-2 1 1 2 n
+10 7 4 4 bp
+1 1 0 2 p
 GETTable
-10 10 1 0
+29 10 4 4
+2 1 1 2 n n
+7 5 6 5 n n
+8 4 2 1 b b
+7 5 6 3 n n
+6 4 3 4 p p
+1 1 0 2 p p
+8 4 2 1 b b
 2 1 1 2 n n
 GETHAND
 4
 2 1 1 2 n
-2 1 1 2 n
-2 1 1 2 n
-2 1 1 2 n
+10 7 4 4 bp
+1 1 0 2 p
+1 1 0 2 p
 GETHAND
-2 1 1 2 n
-2 1 1 2 n
-2 1 1 2 n
+10 7 4 4 bp
+1 1 0 2 p
+1 1 0 2 p
 GETTable
-10 10 3 1
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
+26 10 2 1
+10 7 4 4 bp bp
+7 5 6 3 n n
+7 5 6 3 n n
+GETHAND
+3
+1 1 0 2 p
+1 1 0 2 p
+1 1 0 2 p
+GETHAND
+1 1 0 2 p
+1 1 0 2 p
+GETTable
+26 4 3 2
+1 1 0 2 p p
+1 1 0 2 p p
+7 5 6 1 n n
+1 1 0 2 p p
+10 7 4 4 bp bp
+GETHAND
+2
+1 1 0 2 p
+8 4 2 1 b
+GETHAND
+8 4 2 1 b
+GETTable
+22 4 2 3
+8 4 2 1 b b
+1 1 0 2 p p
+1 1 0 2 p p
+10 7 4 4 bp bp
+10 7 4 2 bp bp
 GETHAND
 3
 2 1 1 2 n
-2 1 1 2 n
-2 1 1 2 n
+7 5 6 5 n
+10 7 4 4 bp
 GETHAND
-2 1 1 2 n
-2 1 1 2 n
+7 5 6 5 n
+10 7 4 4 bp
 GETTable
-9 9 5 3
+18 4 3 5
+7 5 6 5 n n
 2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
+8 4 2 1 b b
+1 1 0 2 p p
+1 1 0 2 p p
+1 1 0 2 p p
+10 7 4 4 bp bp
+10 7 4 2 bp bp
 GETHAND
 2
-2 1 1 2 n
-2 1 1 2 n
+10 7 4 4 bp
+6 4 3 4 p
 GETHAND
-2 1 1 2 n
+6 4 3 4 p
 GETTable
-6 6 7 5
+10 4 2 2
+10 7 4 4 bp bp
+7 5 6 3 n n
+7 5 6 3 n n
+10 7 4 2 bp bp
+GETHAND
+2
+6 4 3 4 p
+1 1 0 2 p
+GETHAND
+1 1 0 2 p
+GETTable
+10 4 2 1
+1 1 0 2 p p
+6 4 3 4 p p
+8 4 2 1 b b
+GETHAND
+1
+6 4 3 4 p
+GETHAND
+GETTable
+10 4 2 3
+6 4 3 4 p p
+6 4 3 4 p p
+6 4 3 4 p p
 2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
+8 4 2 1 b b
+GETHAND
+1
+1 1 0 2 p
+GETHAND
+GETTable
+10 4 2 1
+1 1 0 2 p p
+6 4 3 2 p p
+10 7 4 4 bp bp
 GETHAND
 1
 2 1 1 2 n
 GETHAND
-2 1 1 2 n
 GETTable
-1 1 7 7
+10 4 1 2
 2 1 1 2 n n
+1 1 0 2 p p
+10 7 4 1 bp bp
+GETHAND
+1
+1 1 0 2 p
+GETHAND
+GETTable
+4 4 2 3
+1 1 0 2 p p
 2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
-2 1 1 2 n n
+5 3 2 2 s s
+1 1 0 2 p p
+10 7 4 1 bp bp
 GETHAND

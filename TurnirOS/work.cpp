@@ -38,6 +38,8 @@ void addToMessage(int player, string st)
 			message2.push_back(st[i]);
 }
 
+void writePlayerPipe(vector<char>mass, int player);
+
 void sendMessage(int player)
 {
 	if (player == 0)
@@ -75,25 +77,27 @@ void readPlayerPipe()
 
 	DWORD exit = 0;
 
-	if (player == 0)//Первый игрок
+	//Первый игрок
 	{
 		PeekNamedPipe(hChildStdout_R1, chBuf, BUFSIZE, &size, &avail, NULL);//Если в канале что-то есть
 		if (avail != 0)
 		{
 			ZeroMemory(&chBuf, sizeof(chBuf));//Считаем содержимое канала
 			ReadFromPipe(hChildStdout_R1, hChildStdout_W1, chBuf, avail);
-			std::cout << "Get from 1: " << chBuf << std::endl;
+			std::cout << "Get from 1: " << endl << chBuf << std::endl;
+			mlog << "Get from 1: " << endl << chBuf << std::endl;
 			make_tokens(que1, chBuf, avail);
 		}
 	}
-	else//Второй игрок
+	//Второй игрок
 	{
 		PeekNamedPipe(hChildStdout_R2, chBuf, BUFSIZE, &size, &avail, NULL);
 		if (avail != 0)
 		{
 			ZeroMemory(&chBuf, sizeof(chBuf));
 			ReadFromPipe(hChildStdout_R2, hChildStdout_W2, chBuf, avail);
-			std::cout << "Get from 2: " << chBuf << std::endl;
+			std::cout << "Get from 2: " << endl << chBuf << std::endl;
+			mlog << "Get from 2: " << endl << chBuf << std::endl;
 			make_tokens(que2, chBuf, avail);
 		}
 	}
@@ -107,14 +111,78 @@ int getArgumentCount()
 void getAction(int & type, int & scr, int & dst, int & param, int & code)
 {
 	readPlayerPipe();
-
+	if (gameStart)
+	{
+		int col = 4;
+		int args[4];
+		//que1 >> name;
+		for (int i(0); i < col; i++)
+		{
+			string arg;
+			que2 >> arg;
+			try
+			{
+				args[i] = std::stoi(arg, nullptr, 10);
+			}
+			catch (...)
+			{
+				throw (const char *)"KEK";
+			}
+		}
+		param = args[0] * 1000 + args[1] * 100 + args[2] * 10 + args[3];
+		col = 3;
+		for (int i(0); i < col; i++)
+		{
+			string arg;
+			que1 >> arg;
+			try
+			{
+				args[i] = std::stoi(arg, nullptr, 10);
+			}
+			catch (...)
+			{
+				throw (const char *)"KEK";
+			}
+		}
+		code = args[0] * 100 + args[1] * 10 + args[2];
+		return;
+	}
 	int args[3];
 	string name, arg;
 
-	int col = getArgumentCount();
 	if (player == 0)
 	{
 		que1 >> name;
+		if (COMMANDS.find(name) == COMMANDS.end())
+		{
+			cout << "ERROR -> " << 0 << " write: " << name << endl;
+			return;
+		}
+		type = COMMANDS.find(name)->second;
+
+		if (name == "-GET_HAND")
+		{
+			getHand(player);
+			
+			return;
+		}
+		if (name == "-GET_TABLE")
+		{
+			getTable(player);
+			
+			return;
+		}
+		if (name == "-GET_INFO")
+		{
+			getInfo(player);
+			
+			return;
+		}
+		if (name == "-END_TURN")
+		{
+			return;
+		}
+		int col = getArgumentCount();
 		for (int i(0); i < col; i++)
 		{
 			que1 >> arg;
@@ -131,6 +199,36 @@ void getAction(int & type, int & scr, int & dst, int & param, int & code)
 	else
 	{
 		que2 >> name;
+		if (COMMANDS.find(name) == COMMANDS.end())
+		{
+			cout << "ERROR -> " << 0 << " write " << name << endl;
+			return;
+		}
+		type = COMMANDS.find(name)->second;
+
+		if (name == "-GET_HAND")
+		{
+			getHand(player);
+			//type = 4;
+			return;
+		}
+		if (name == "-GET_TABLE")
+		{
+			getTable(player);
+			//type = 5;
+			return;
+		}
+		if (name == "-GET_INFO")
+		{
+			getInfo(player);
+			//type = 6;
+			return;
+		}
+		if (name == "-END_TURN")
+		{
+			return;
+		}
+		int col = getArgumentCount();
 		for (int i(0); i < col; i++)
 		{
 			que2 >> arg;
@@ -144,12 +242,12 @@ void getAction(int & type, int & scr, int & dst, int & param, int & code)
 			}
 		}
 	}
-	if (col >= 1)
-		scr = args[0];
-	if (col >= 2)
-		dst = args[1];
-	if (col >= 3)
-		param = args[2];
+	//if (col >= 1)
+	scr = args[0];
+	//if (col >= 2)
+	dst = args[1];
+	//if (col >= 3)
+	param = args[2] % 30;
 }
 
 void processAttack(int scr, int trg)
@@ -164,7 +262,7 @@ void processAttack(int scr, int trg)
 
 	/* LOG? */
 	Qlog << player << " ATTACK " << scr << ' ' << trg << "   " << table[player][selected]->Atk << " dmg" << endl;
-	Qlog << 1-player << " ATTACK " << trg << ' ' << scr << "   " << table[1-player][selected]->Atk << " dmg" << endl;
+	Qlog << 1-player << " ATTACK " << trg << ' ' << scr << "   " << table[1-player][target]->Atk << " dmg" << endl;
 	/* ADD EFFECT IF CURSE */
 
 	// tmp check death
@@ -184,13 +282,17 @@ void processAttack(int scr, int trg)
 void processDrawACard(int pl)
 {
 	// Log?
-	
+	Qlog << pl << " DRAWCARD ";// << //endl;
+
 	//
 
 	if (deck[pl].size() == 0)
 	{
 		// Draw fatique (1.. 2.. 3.. 4.. и тд урона)
-
+		
+		fatique[pl]++;
+		health[pl] -= fatique[pl];
+		Qlog << "-1 FATIQUE " << fatique[pl] << endl;
 	}
 	else
 	{
@@ -198,10 +300,15 @@ void processDrawACard(int pl)
 		{
 			// log
 			// discard card
-			delete hand[pl][0];
+			Qlog << "DISCARD " << deck[pl][0]->id << ' ' << deck[pl][0]->manaCost << ' ' << deck[pl][0]->Atk << ' ' << deck[pl][0]->Def << endl;
+			delete deck[pl][0];
+			
 		}
 		else
+		{
+			Qlog << deck[pl][0]->id << ' ' << deck[pl][0]->manaCost << ' ' << deck[pl][0]->Atk << ' ' << deck[pl][0]->Def << endl;
 			hand[pl].push_back(deck[pl][0]);
+		}
 		deck[pl].erase(deck[pl].begin() + 0);
 		
 	}
@@ -235,6 +342,11 @@ void processPlayCard(int card, int pos, int trg)
 		// Вначале хода всем картам на столе нужно устновить флаг isStorm.
 		// Если у карты isCanAttack = false то isStorm устанавливать не нужно
 		tableCheck[player][selected] = true;
+		// Если у карты есть эффект, активируем его + Log
+		if (table[player][selected]->isFanfare)
+		{
+			table[player][selected]->effPTR(table[player][selected]);
+		}
 	}
 }
 
@@ -284,8 +396,18 @@ void processTurnMain()
 
 	for (int i(0); i < 7; i++)
 		if (tableCheck[player][i])
-			table[player][i]->isStorm = true;
-
+		{
+			if (!table[player][i]->isDisabled)
+			{
+				table[player][i]->isStorm = true;
+				table[player][i]->isRush = false;
+			}
+			else
+			{
+				table[player][i]->isStorm = false;
+				table[player][i]->isRush = false;
+			}
+		}
 	// Actually start of the turn
 
 	while (1)
@@ -398,7 +520,8 @@ void processTurnMain()
 								// сдвигаем вправо
 								// ЭТО СКОРЕЕ ВСЕГО НУЖНО ЛОГИРОВАТЬ
 								// ПОТОМУ ЧТО ВИЗУАЛЬНО ТО ИЗМЕНЕНИЕ ПРОИЗХОДИТ НА СТОЛЕ
-								for (int i(emp); i > dst + 1; i--)
+								Qlog << player << " SHIFT " << scr << " RIGHT " << endl;
+								for (int i(emp); i >= dst + 1; i--)
 									table[player][i] = table[player][i - 1];
 							}
 							else
@@ -406,6 +529,7 @@ void processTurnMain()
 								// сдвигаем влево
 								// ЭТО СКОРЕЕ ВСЕГО НУЖНО ЛОГИРОВАТЬ
 								// ПОТОМУ ЧТО ВИЗУАЛЬНО ТО ИЗМЕНЕНИЕ ПРОИЗХОДИТ НА СТОЛЕ
+								Qlog << player << " SHIFT " << scr << " LEFT " << endl;
 								for (int i(emp); i < dst - 1; i++)
 									table[player][i] = table[player][i + 1];
 
@@ -427,12 +551,13 @@ void processTurnMain()
 			break;
 		case 2: // ATTACK
 		{
-			if (tableCheck[player][scr] && table[player][scr]->isStorm)
+			if (tableCheck[player][scr] && (table[player][scr]->isStorm || table[player][scr]->isRush))
 			{
 				if (dst != -1 && tableCheck[1 - player][dst])
 				{
 					// Здесь всё сложнее...
 					table[player][scr]->isStorm = false;
+					table[player][scr]->isRush = false;
 					// Проверка на удар по провокациям...
 
 					int tt = getLeftTaunt(player); // res < 0 если таунтов вообще нет
@@ -449,9 +574,10 @@ void processTurnMain()
 				}
 				else
 				{
-					if (dst == -1)
+					if (dst == -1 && (table[player][scr]->isRush == false || table[player][scr]->isStorm == true))
 					{
 						table[player][scr]->isStorm = false;
+						table[player][scr]->isRush = false;
 						int tt = getLeftTaunt(player); // res < 0 если таунтов вообще нет
 						if (tt < 0)
 						{
@@ -485,7 +611,7 @@ void processTurnMain()
 		// Можно и флаг возвести
 		// но как-то лень
 		
-		for (int i(0); i < 6; i++) // Этот цикл обязателен я знаю пример, когда без него останется существо с -1 хп и не умрёт
+		for (int i(0); i < 7; i++) // Этот цикл обязателен я знаю пример, когда без него останется существо с -1 хп и не умрёт
 		{
 			// По крайней мере мы будем уверены, что на столе нет карт с -1 и менее хп)
 			// Но здесь вообще кроется некоторая проблема данной архитектуры.
@@ -505,7 +631,7 @@ void processTurnMain()
 		while (refresh)
 		{
 			refresh = false;
-			for (int i(0); i < 6; i++) 
+			for (int i(0); i < 7; i++) 
 			{
 				if (tableCheck[player][i] && table[player][i]->Def <= 0)
 					destroyCard(player, i);
@@ -518,6 +644,7 @@ void processTurnMain()
 		if (health[0] <= 0)
 		{
 			Qlog << "PLAYER 1 DEFEATED" << endl;
+			Qlog << "PLAYER 2 WIN" << endl;
 			gameExit = true;
 			break;
 		}
@@ -525,13 +652,22 @@ void processTurnMain()
 		if (health[1] <= 0)
 		{
 			Qlog << "PLAYER 2 DEFEATED" << endl;
+			Qlog << "PLAYER 1 WIN" << endl;
 			gameExit = true;
 			break;
 		}
 
+		Sleep(200);
+
 	}
 
 	// End of the turn
+
+	for (int i(0); i < 7; i++)
+	{
+		if (tableCheck[player][i])
+			table[player][i]->isDisabled = false;
+	}
 
 	// Activating end turn abilities
 	// if they exist...
@@ -579,7 +715,7 @@ void getTable(int pl)
 	for (int i(0); i<7; i++)
 		if (tableCheck[1-pl][i])
 		{
-			addToMessage(1-pl, to_string(i) + ' ' + to_string(table[1-pl][i]->id) + ' ' + to_string(table[1-pl][i]->scrManaCost)
+			addToMessage(pl, to_string(i) + ' ' + to_string(table[1-pl][i]->id) + ' ' + to_string(table[1-pl][i]->scrManaCost)
 				+ ' ' + to_string(table[1-pl][i]->Atk) + ' ' + to_string(table[1-pl][i]->Def) + ' ' + ((!table[1-pl][i]->isCanAttack) ? '-' : ((table[1-pl][i]->isRush || table[1-pl][i]->isStorm) ? '+' : '-'))
 				+ ' ' + table[1-pl][i]->spec + '\n');
 		}
@@ -600,9 +736,32 @@ void getHand(int pl)
 }
 
 void getInfo(int pl)
-{
+{ 
 	addToMessage(pl, to_string(turn) + ' ' + to_string(mana[pl]) + ' ' + to_string(maxMana[pl]) + ' ' + to_string(mana[1 - pl])
 		+ ' ' + to_string(maxMana[1 - pl]) + ' ' + to_string(hand[1 - pl].size()) + ' ' + to_string(deck[pl].size()) + ' '
 		+ to_string(deck[1 - pl].size()) + '\n');
 	sendMessage(pl);
+}
+
+void shuffleDeck(int pl)
+{
+	for (int i(0); i < deck[pl].size(); i++)
+	{
+		int idx = rand() % deck[pl].size();
+		swap(deck[pl][i], deck[pl][idx]);
+	}
+	Qlog << pl << " SHUFFLE ";
+	for (int i(0); i < deck[pl].size(); i++)
+	{
+		Qlog << deck[pl][i]->id << ' ';
+	}
+	Qlog << endl;
+}
+
+void writeHod(int pl)
+{
+	addToMessage(0, to_string(1) + '\n');
+	sendMessage(0);
+	addToMessage(1, to_string(2) + '\n');
+	sendMessage(1);
 }

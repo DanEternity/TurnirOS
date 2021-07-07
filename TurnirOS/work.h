@@ -73,3 +73,5 @@ void loadDeck(string filename, int pl);//Загружает колоду
 void getTable(int pl);
 void getHand(int pl);
 void getInfo(int pl);
+void shuffleDeck(int pl);
+void writeHod(int pl);

@@ -52,7 +52,7 @@ extern HANDLE hChildStdout_R2, hChildStdout_W2;
 
 extern PROCESS_INFORMATION pi1, pi2;
 
-const int BUFSIZE = 64;
+const int BUFSIZE = 4096;
 
 extern map<string, int>COMMANDS;
 
@@ -68,7 +68,7 @@ extern vector<Card*> hand[2];
 extern int health[2];
 extern int mana[2];
 extern int maxMana[2];
-
+extern int fatique[2];
 // info game
 extern int turn; // номер хода
 extern int player; // кто из игроков ходит
@@ -100,5 +100,8 @@ void closeLog();
 
 extern int debugVal;
 extern ofstream Qlog;
+extern ofstream mlog;
 extern bool gameExit;
+extern bool gameStart;
+
 int qqq();

@@ -43,6 +43,7 @@ public:
 	bool isLastWord;
 	bool isFanfare;
 	bool isClash;
+	bool isDisabled; // CANT ATTACK // REMOVES AT THE END OF CARD TURN
 
 	// info
 	bool requredSp;//Есть ли дополнительные особенности карты, которые проявляются при розыгрыше
@@ -79,3 +80,5 @@ void fDamage(Card * scr); // deal atr1 dmg to @selected@ enemy unit // DO NOT CO
 void fManaUp(Card * scr); // Give atr1 mana until the end of the turn
 void fFreeze(Card * scr); // Freeze enemy; He will lost his next turn
 void fLWCreateCreature(Card * scr); // Create creature with ID = atr1
+void fDrawCards(Card * scr);
+void fDamageAOE(Card * scr); // deal dmg to all except this card;

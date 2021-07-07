@@ -16,6 +16,8 @@ int health[2];
 int mana[2];
 int maxMana[2];
 
+int fatique[2] = { 0, 0 };
+
 // info game
 int turn; // номер хода
 int player; // кто из игроков ходит
@@ -30,7 +32,9 @@ bool refresh = false;
 vector<Card*> DataBase;
 int debugVal = 0;
 ofstream Qlog("log.txt");
+ofstream mlog("players_log.txt");
 bool gameExit = false;
+bool gameStart = true;
 
 int qqq()
 {
@@ -47,7 +51,7 @@ PROCESS_INFORMATION pi1, pi2;
 
 vector<char> message1, message2;
 
-map<string, int>COMMANDS = { { "-PLAY", 0 },{ "-ATTACK", 1 },{ "-END_TURN", 2 },{ "-GET_TABLE", 3}, {"-GET_INFO",4}, {"-GET_HAND",5}, {"-CONCEDE", 6} };
+map<string, int>COMMANDS = { { "-PLAY", 1 },{ "-ATTACK", 2 },{ "-END_TURN", 3 },{ "-GET_TABLE", 4}, {"-GET_INFO",5}, {"-GET_HAND",6}, {"-CONCEDE", 7} };
 //Функции для работы с дочерними процессами
 
 void WriteToPipe(HANDLE read, HANDLE write, CHAR chBuf[], int size)
